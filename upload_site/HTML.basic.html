@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的自我介绍</title>
+    <style>
+        /* 统一字体颜色为深灰色，无背景框 */
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+            background: #f5f7fa;
+            color: #333;
+        }
+        h1 { padding-bottom: 8px; }
+        p { line-height: 1.8; margin: 10px 0 18px 0; }
+        img { max-width: 100%; height: auto; display: block; margin: 10px 0; }
+    </style>
+<link rel="stylesheet" href="./font/iconfont.css">
+</head>
+<body>
+
+    <!-- ========== 一级标题：自我介绍 ========== -->
+    <h1>自我介绍</h1>
+    <p><strong>大家好，我叫尹松旺。</strong> 下面我将从几个方面介绍自己，让您更全面地了解我。</p>
+
+    <!-- ========== 二级标题：基本信息 ========== -->
+    <h2>基本信息</h2>
+    <p>我今年 22 岁。性格开朗，乐于沟通，善于在团队中协调合作。日常喜欢关注科技动态，对新事物充满好奇。</p>
+
+    <!-- ========== 三级标题：教育背景 ========== -->
+    <h3>教育背景</h3>
+    <p>我就读计算机科学与技术专业。主修课程包括数据结构、操作系统、计算机网络、数据库原理等。在校期间，我连续三年获得校级奖学金，并参与了“大学生创新创业训练计划”项目，负责前端开发部分。</p>
+
+    <!-- ========== 四级标题：专业技能 ========== -->
+    <h4>专业技能</h4>
+    <p>我熟练掌握 HTML5、CSS3 和 JavaScript，能够独立完成响应式页面布局和交互效果。熟悉 Vue.js 框架的基本使用，了解 Webpack 和 Git 工具。此外，我对 UI/UX 设计有一定研究，能使用 Figma 进行简单的原型设计。</p>
+
+    <!-- ========== 五级标题：兴趣爱好 ========== -->
+    <h5>兴趣爱好</h5>
+    <p>业余时间我喜欢打羽毛球，每周固定和球友切磋两场，既锻炼身体又释放压力。我还热爱摄影，尤其喜欢拍摄城市风光和人文纪实。阅读方面，我偏爱技术博客和科幻小说，最近在读《三体》和《JavaScript 高级程序设计》。</p>
+
+    <!-- ========== 六级标题：个人寄语 ========== -->
+    <h6>个人寄语</h6>
+    <p><em>“行胜于言，质胜于华”</em> —— 我相信脚踏实地做好每一件小事，才能积累出大的成就。未来我希望能在前端领域持续深耕，成为一名有影响力的全栈开发者，同时也期待与更多志同道合的朋友交流学习。</p>
+
+    <hr>
+
+    <!-- ========== 超链接和图片 ========== -->
+    <h2>超链接和图片</h2>
+    <a href="http://baidu.com" target="_blank">百度</a>
+    <img src="./img/25397f54582799e5f00d1b9a186d2626.jpg" alt="截图示例">
+
+    <hr>
+
+    <!-- ========== 表格 ========== -->
+    <h2>用户信息表</h2>
+    <table border="2" cellspacing="0" cellpadding="3">
+        <caption>用户信息表</caption>
+        <tr>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>城市</th>
+        </tr>
+        <tr>
+            <td>张三</td>
+            <td>18</td>
+            <td>男</td>
+            <td>北京</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <!-- ========== div 演示、H5 语义 ========== -->
+    <h2>div 与 H5 语义示例</h2>
+
+    <div style="background: yellow;">
+        <p>div特点1:独占一整行,自动前后换行,是块级元素</p>
+        <p>div特点2:可以嵌套任意标签(标题、段落、图片、列表都能放)</p>
+    </div>
+
+    <div style="background: pink;">
+        <p>div特点1:独占一整行,自动前后换行,是块级元素</p>
+        <p>div特点2:可以嵌套任意标签(标题、段落、图片、列表都能放)</p>
+    </div>
+
+    <h3>H5 语义标签</h3>
+    <header>头部</header>
+    <nav>导航条</nav>
+    <section>内容区域</section>
+    <article>文章区域</article>
+    <footer>页脚</footer>
+    <aside>侧边栏</aside>
+
+    <hr>
+
+    <!-- ========== 基础表单 + H5 表单（完整版，包含所有字段） ========== -->
+    <h2>基础表单+H5表单</h2>
+    <form action="http://baidu.com" name="fm" method="post">
+        <!-- 用户名（必填） -->
+        <p>
+            用户名:
+            <input type="text" placeholder="请输入用户名" required>
+        </p>
+
+        <!-- 密码（带 label） -->
+        <p>
+            <label for="pwd">密码：</label>
+            <input type="password" name="pwd" id="pwd">
+        </p>
+
+        <!-- 邮箱 -->
+        <p>
+            邮箱：
+            <input type="email" name="email" id="email">
+        </p>
+
+        <!-- 性别（单选） -->
+        <p>
+            性别：
+            <input type="radio" name="gender" value="f">女
+            <input type="radio" name="gender" value="m">男
+        </p>
+
+        <!-- 爱好（复选框，来自最新添加） -->
+        <p>
+            爱好：
+            <input type="checkbox" name="hobby" value="c"> cording
+            <input type="checkbox" name="hobby" value="s"> playing
+            <input type="checkbox" name="hobby" value="r"> reading
+        </p>
+
+        <!-- 自我介绍（文本域） -->
+        <p>
+            自我介绍：<br>
+            <textarea name="intro" id="intro" cols="30" rows="10"></textarea>
+        </p>
+
+        <!-- 同意/不同意（单选） -->
+        <p>
+            <input type="radio" name="agree" value="yes">同意
+            <input type="radio" name="agree" value="no">不同意
+        </p>
+
+        <!-- 文件上传（支持多选） -->
+        <p>
+            请上传文件：
+            <input type="file" name="file" id="file" multiple>
+        </p>
+
+        <!-- 提交按钮 -->
+        <p>
+            <input type="submit" value="提交">
+        </p>
+    </form>
+
+</body>
+</html>

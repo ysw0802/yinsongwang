@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>尹松旺的《高级网页设计》课堂实践</title>
+  <style>
+    :root {
+      --page-bg: #eef3f8;
+      --text: #20314b;
+      --muted: #65738b;
+      --soft-blue: #dceaff;
+      --soft-card: #ffffff;
+      --blue: #245b8a;
+      --blue-dark: #173b61;
+      --blue-light: #8bbbe9;
+      --gold: #f3c96b;
+      --line: #bfd3e8;
+      --shadow: rgba(26, 63, 102, 0.12);
+      --font-main: "Microsoft YaHei", "PingFang SC", "Avenir Next", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 80% 8%, rgba(139, 187, 233, 0.25), transparent 22%),
+        radial-gradient(circle at 20% 85%, rgba(243, 201, 107, 0.16), transparent 30%),
+        linear-gradient(120deg, var(--page-bg), #f8fbff);
+      font-family: var(--font-main);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
+      background-size: 34px 34px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 40px 0 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 22px;
+      box-shadow: 0 16px 40px var(--shadow);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 20px;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: fit-content;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      box-shadow: 0 10px 22px var(--shadow);
+      border: 3px solid #fff;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-text .title {
+      font-size: clamp(22px, 2vw, 30px);
+      font-weight: 800;
+      color: var(--blue-dark);
+      letter-spacing: 1px;
+    }
+
+    .brand-text .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav a:hover {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: minmax(460px, 1.8fr) minmax(260px, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main {
+      background: var(--soft-card);
+      border-radius: 30px;
+      padding: clamp(28px, 5vw, 54px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 24px 60px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+    }
+
+    .hero-main::after {
+      content: "";
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(139, 187, 233, 0.08);
+      border: 1px solid var(--line);
+      position: absolute;
+      right: -90px;
+      top: -80px;
+      filter: blur(8px);
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      background: var(--soft-blue);
+      border-radius: 999px;
+      border: 1px solid var(--line);
+    }
+
+    .hero-main h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(40px, 5vw, 60px);
+      line-height: 1.15;
+      max-width: 760px;
+      color: var(--blue-dark);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-main .description {
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.8;
+      max-width: 680px;
+      margin: 0 0 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 160px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 12px 30px var(--shadow);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      background: var(--blue-dark);
+    }
+
+    .btn.secondary {
+      background: var(--blue-light);
+      color: var(--blue-dark);
+    }
+
+    .hero-aside {
+      background: linear-gradient(160deg, var(--blue-dark), var(--blue));
+      color: #fff;
+      border-radius: 30px;
+      padding: 30px 26px;
+      box-shadow: 0 24px 60px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
+      border: 1px solid rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-aside::before,
+    .hero-aside::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: transparent;
+      right: -50px;
+      top: -40px;
+    }
+
+    .hero-aside::after {
+      width: 260px;
+      height: 260px;
+      left: -80px;
+      bottom: -90px;
+      right: auto;
+      top: auto;
+    }
+
+    .aside-head {
+      position: relative;
+      z-index: 1;
+    }
+
+    .aside-head .label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 14px;
+    }
+
+    .aside-head .year {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-family: "Trebuchet MS", Arial, sans-serif;
+    }
+
+    .aside-head .course-code {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .aside-list {
+      padding: 0;
+      margin: 34px 0 0;
+      list-style: none;
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.4);
+      padding-top: 22px;
+    }
+
+    .aside-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: #eaf4ff;
+    }
+
+    .aside-list li::before {
+      content: "✦";
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      margin-top: 26px;
+    }
+
+    .panel {
+      background: var(--soft-card);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 14px 34px var(--shadow);
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title h2 {
+      color: var(--blue-dark);
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .panel-title .tag {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      background: var(--soft-blue);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .module-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #f7faff;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+
+    .module-item:hover {
+      background: var(--soft-blue);
+      transform: translateX(3px);
+    }
+
+    .module-item .module-name {
+      color: var(--blue-dark);
+      font-weight: 800;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .module-item .module-name::before {
+      content: "✎";
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .module-item a {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .module-item a:hover {
+      color: var(--blue-dark);
+    }
+
+    .overview-card {
+      background: linear-gradient(180deg, var(--soft-card), #eef6ff);
+      padding: 26px;
+      border-radius: 24px;
+      box-shadow: 0 14px 34px var(--shadow);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overview-card .mini-title {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .overview-card h3 {
+      color: var(--blue-dark);
+      margin: 0 0 12px;
+      font-size: 30px;
+    }
+
+    .overview-card p {
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 15px;
+      margin: 0 0 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(110px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: var(--soft-card);
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--blue-dark);
+      font-size: 28px;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .prompt-panel {
+      margin-top: 24px;
+      background: var(--soft-card);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 14px 34px var(--shadow);
+      border: 1px solid var(--line);
+    }
+
+    .prompt-panel h2 {
+      color: var(--blue-dark);
+      font-size: 26px;
+      margin: 0 0 12px;
+    }
+
+    .prompt-text {
+      background: #f8fbfe;
+      border-left: 4px solid var(--gold);
+      padding: 16px 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      border-radius: 14px;
+      white-space: normal;
+      overflow-wrap: break-word;
+    }
+
+    .file-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .file-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #eef6ff;
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.22s ease;
+    }
+
+    .file-link span {
+      color: var(--blue);
+      font-size: 18px;
+    }
+
+    .file-link:hover {
+      background: var(--blue);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 24px;
+      padding: 20px 0;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        min-height: auto;
+      }
+
+      .hero-aside {
+        min-height: 280px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+<link rel="stylesheet" href="./font/iconfont.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">✦</div>
+        <div class="brand-text">
+          <div class="title">高级网页设计</div>
+          <div class="subtitle">课堂实践作品集</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#course">课程目录</a>
+        <a href="#modules">模块目录</a>
+        <a href="#prompt">提示词</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <section class="hero-main">
+        <div class="kicker">尹松旺 / 课程实践</div>
+        <h1>尹松旺的《高级网页设计》课堂实践</h1>
+        <p class="description">
+          本课程项目从基础网页结构出发，逐步完成 HTML 基础、个人网页创作与后续模块拓展。
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn" href="#course">开始查看课程目录</a>
+          <a class="btn secondary" href="#modules">查看模块列表</a>
+        </div>
+      </section>
+
+      <aside class="hero-aside">
+        <div class="aside-head">
+          <div class="label">课程时序</div>
+          <div class="year">2026</div>
+          <div class="course-code">Web Design Practice</div>
+        </div>
+
+        <ul class="aside-list">
+          <li>HTML基础</li>
+          <li>自我介绍网页</li>
+          <li>上图下文 / 隐藏动画</li>
+          <li>层叠与继承 + 盒模型</li>
+          <li>布局练习</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section-grid">
+      <section class="panel" id="course">
+        <div class="panel-title">
+          <h2>课堂目录</h2>
+          <div class="tag">课程目录</div>
+        </div>
+
+        <div class="module-list">
+          <div class="module-item">
+            <div class="module-name">HTML基础</div>
+            <a href="HTML.basic.html">进入</a>
+          </div>
+          <div class="module-item">
+            <div class="module-name">自我介绍网页</div>
+            <a href="html_basic004.html">进入</a>
+          </div>
+          <div class="module-item">
+            <div class="module-name">上图下文 / 隐藏动画</div>
+            <a href="picture_above_text004.html">进入</a>
+          </div>
+          <div class="module-item">
+            <div class="module-name">层叠与继承 + 盒模型</div>
+            <a href="stack004.html">进入</a>
+          </div>
+          <div class="module-item">
+            <div class="module-name">布局练习</div>
+            <a href="layout004.html">进入</a>
+          </div>
+          <div class="module-item">
+            <div class="module-name">其余模块后续在增加</div>
+            <a href="#">待更新</a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="overview-card">
+        <div class="mini-title">课程说明</div>
+        <h3>网页设计实践</h3>
+        <p>
+          以原生 HTML、CSS 与网页结构知识为核心，逐步推进课程内容建设、作品展示与课堂记录。
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>05</strong>
+            <span>模块规划</span>
+          </div>
+          <div class="stat">
+            <strong>01</strong>
+            <span>实践站点</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel" id="modules" style="margin-top: 24px;">
+      <div class="panel-title">
+        <h2>网页目录</h2>
+        <div class="tag">HTML 目录</div>
+      </div>
+
+<!-- AUTO-LINKS:START （由 update-index.js 自动生成，请勿手改这一块） -->
+      <div class="file-links">
+        <a class="file-link" href="index.html" title="尹松旺的《高级网页设计》课堂实践"><span>✎</span>index.html</a>
+        <a class="file-link" href="css3004.html" title="CSS3选择器+animation"><span>✎</span>css3004.html</a>
+        <a class="file-link" href="grid004.html" title="网格布局grid"><span>✎</span>grid004.html</a>
+        <a class="file-link" href="html_basic004.html" title="我的第一个网页"><span>✎</span>html_basic004.html</a>
+        <a class="file-link" href="HTML.basic.html" title="我的自我介绍"><span>✎</span>HTML.basic.html</a>
+        <a class="file-link" href="layout004.html" title="网页整体布局"><span>✎</span>layout004.html</a>
+        <a class="file-link" href="picture_above_text004.html" title="隐藏动画"><span>✎</span>picture_above_text004.html</a>
+        <a class="file-link" href="stack004.html" title="层叠与继承+盒模型"><span>✎</span>stack004.html</a>
+        <a class="file-link" href="svg004.html" title="SVG图标"><span>✎</span>svg004.html</a>
+      </div>
+
+      <div class="mini-title" style="margin-top:22px;">样式文件（CSS）</div>
+      <div class="file-links">
+        <a class="file-link" href="css3004.css"><span>✎</span>css3004.css</a>
+        <a class="file-link" href="html_back.css"><span>✎</span>html_back.css</a>
+        <a class="file-link" href="layout004.css"><span>✎</span>layout004.css</a>
+        <a class="file-link" href="pic_above_text.css"><span>✎</span>pic_above_text.css</a>
+        <a class="file-link" href="stack004.css"><span>✎</span>stack004.css</a>
+        <a class="file-link" href="svg004.css"><span>✎</span>svg004.css</a>
+      </div>
+      <!-- AUTO-LINKS:END -->
+    </section>
+
+    <section class="prompt-panel" id="prompt">
+      <h2>本提示词</h2>
+      <div class="prompt-text">
+        创建一个新页面，包括本目录下的所有网页的超链接，使用原生代码，不使用cdn，新页面名称为index.html，主题为尹松旺的《高级网页设计》课堂实践，美化页面，课堂目录中包含HTML基础、自我介绍网页、其余模块后续在增加。页面中包括本提示词。
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 尹松旺《高级网页设计》课堂实践 · HTML 基础网页目录
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+*{
+    padding: 0;
+    margin: 0;
+    /*width和height是包含边框border和padding */
+    box-sizing: border-box;
+}
+body{
+    background-color: 🟨yellow;
+    font-family: "微软雅黑";
+    color: 🟦blue;
+}
+/* 继承: 子元素会继承父元素的一些属性，比如font、color，
+但是不会继承margin、padding、border */
+.container{
+    background-color: 🟥red;
+    width: 1200px;
+    margin: 40px auto;
+}
+/* 类选择器优先级高于标签选择器 */
+/* 选择器优先级: 后代选择器>ID选择器>类选择器>标签选择器 */
+.container-title{
+    color: ⬛black;
+}
+h2{
+    color: ⬜white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+    padding: 10px 20px;
+    border: 2px dotted ⬜white;
+}
+/* 后代选择器的优先级高于类选择器，后代选择器层级越多优先级越高 */
+/* body .container .card-wrap{
+    background-color:purple;
+    padding: 20px;
+} */
+.container .card-wrap{
+    background-color: green;
+    padding: 20px;
+}
+/* id选择器的优先级高于类选择器 */
+#card-wrap{
+    background-color: 🟧orange;
+}
+.card-wrap{
+    background-color: 🟪pink;
+    padding: 20px;
+}

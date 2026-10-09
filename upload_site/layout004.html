@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页整体布局</title>
+    <link rel="stylesheet" href="./layout004.css">
+<link rel="stylesheet" href="./font/iconfont.css">
+</head>
+<body>
+    <!-- 头部：放logo和登录按钮 -->
+     <header>
+        <div class="logo">logo</div>
+        <div class="login">login</div>  
+    </header>
+    
+    <!-- 导航栏：放导航链接 -->
+    <nav>导航</nav>
+    
+    <div class="wrap">
+        <div class="content-row">
+            <!-- 主内容区：这里放我的作业答案 -->
+            <main>
+                <h2>作业答案</h2>
+
+                <h3>第一部分：看代码找错</h3>
+                <ol>
+                    <li>图片放大跑出卡片 → 修改：在 `.box li` 加 `overflow: hidden;`</li>
+                    <li>鼠标移出无过渡 → 修改：将 `transition: all .6s;` 移至 `.box img` 默认样式中。</li>
+                    <li>卡片布局排版错乱 → 修改：在 `.box li` 加 `position: relative;`</li>
+                </ol>
+
+                <h3>第二部分：补全代码</h3>
+                <p><strong>2.1 语义标签填空：</strong>header, nav, main, aside, footer</p>
+                <p><strong>2.2 卡片动画补全：</strong></p>
+                <ul>
+                    <li>防止溢出：`overflow: hidden;`</li>
+                    <li>子绝父相：`position: relative;`</li>
+                    <li>放大选择器：`.box li img` 和 `.box li:hover img`</li>
+                    <li>transition写在默认状态。原因：移入移出都触发动画；写在hover只有移入有动画。</li>
+                    <li>奇数卡片：`:nth-child(odd)`</li>
+                </ul>
+                <p><strong>2.3 flex两栏布局：</strong>父级开 `display: flex;`，间隔用 `gap: 8px;`</p>
+
+                <h3>第三部分：手写原理简答</h3>
+                <ol>
+                    <li>画图：略（请自行手绘父relative子absolute的关系图并截图）。</li>
+                    <li>overflow:hidden作用：①裁剪溢出；②创建BFC（块级格式化上下文）。</li>
+                    <li>不会挤压卡片。原因：transform属变形属性，不触发重排，不改变文档流实际占位大小。</li>
+                    <li>区别：写在hover上，移出无动画；写在默认上，移入移出都有平滑过渡。</li>
+                    <li>记录bug（不少于30字）：现象：悬停图片放大遮挡旁卡。排查：父容器未限边界。修复：外层li加overflow:hidden。</li>
+                </ol>
+
+                <h3>第四部分：扩展挑战（选做）</h3>
+                <pre><code>&lt;!-- HTML --&gt;
+&lt;a href="#" class="back-to-top"&gt;回到顶部&lt;/a&gt;
+
+&lt;!-- CSS --&gt;
+.back-to-top {
+    position: fixed; left: 20px; bottom: 20px;
+    opacity: 0.5; z-index: 999; transition: all 0.3s;
+}
+.back-to-top:hover {
+    opacity: 1; transform: scale(1.1);
+}</code></pre>
+            </main>
+            
+            <!-- 侧边栏：放一些相关的推荐内容 -->
+            <aside>侧边栏</aside>
+        </div>
+    </div>
+    
+    <!-- 页脚：版权信息和作者姓名 -->
+    <footer>0802 尹松旺</footer>
+    
+    <!-- 固定广告位：用了fixed定位，浮在页面上 -->
+    <div class="fixed-ad">固定定位广告</div>
+</body>
+</html>
