@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）首页（一级页面） -->
+  <title>职位 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app">
+
+    <!-- 顶部：城市 + 搜索入口 -->
+    <header class="ysw-home-header">
+      <span class="ysw-home-header__city">
+        <svg class="ysw-icon"><use href="#i-loc"></use></svg>
+        大连
+        <svg class="ysw-icon ysw-home-header__caret"><use href="#i-caret"></use></svg>
+      </span>
+      <a class="ysw-home-header__search" href="search.html">
+        <svg class="ysw-icon"><use href="#i-search"></use></svg>
+        搜索职位、公司
+      </a>
+    </header>
+
+    <!-- 轮播图 -->
+    <section class="ysw-swiper" id="ysw_swiper">
+      <div class="ysw-swiper__track" id="ysw_swiper_track">
+        <div class="ysw-swiper__slide ysw-swiper__slide--1">
+          <div>
+            <p class="ysw-swiper__title">超级找工作节</p>
+            <p class="ysw-swiper__desc">百万好职位 5折急招中</p>
+          </div>
+          <span class="ysw-swiper__art"><svg class="ysw-icon"><use href="#i-rocket"></use></svg></span>
+        </div>
+        <div class="ysw-swiper__slide ysw-swiper__slide--2">
+          <div>
+            <p class="ysw-swiper__title">名企直招专场</p>
+            <p class="ysw-swiper__desc">与老板直接开聊 拒绝等待</p>
+          </div>
+          <span class="ysw-swiper__art"><svg class="ysw-icon"><use href="#i-medal"></use></svg></span>
+        </div>
+        <div class="ysw-swiper__slide ysw-swiper__slide--3">
+          <div>
+            <p class="ysw-swiper__title">简历优化工具</p>
+            <p class="ysw-swiper__desc">AI诊断简历 通过率翻倍</p>
+          </div>
+          <span class="ysw-swiper__art"><svg class="ysw-icon"><use href="#i-doc"></use></svg></span>
+        </div>
+      </div>
+      <div class="ysw-swiper__dots" id="ysw_swiper_dots"></div>
+    </section>
+
+    <!-- 职位分类九宫格 -->
+    <nav class="ysw-grid" id="ysw_grid"></nav>
+
+    <!-- 热门职位列表 -->
+    <section class="ysw-section">
+      <div class="ysw-section__head">
+        <h2 class="ysw-section__title">热门职位</h2>
+        <a class="ysw-section__more" href="company.html">全部企业
+          <svg class="ysw-icon"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
+      <div class="ysw-tabs" id="ysw_tabs">
+        <span class="ysw-tabs__item ysw-tabs__item--active" data-tab="rec">推荐</span>
+        <span class="ysw-tabs__item" data-tab="new">最新</span>
+        <span class="ysw-tabs__item" data-tab="salary">高薪</span>
+      </div>
+      <ul id="ysw_job_list"></ul>
+      <div class="ysw-loading" id="ysw_loading">
+        <span class="ysw-spinner"></span>
+        <span>正在加载职位...</span>
+      </div>
+    </section>
+
+    <!-- 返回顶部 -->
+    <button class="ysw-backtop" id="ysw_backtop" type="button" aria-label="返回顶部">
+      <svg class="ysw-icon"><use href="#i-top"></use></svg>
+    </button>
+
+    <!-- 底部导航（由公共脚本渲染） -->
+    <nav id="ysw_tabbar"></nav>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）后台管理页 -->
+  <title>后台管理 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app">
+
+    <!-- 顶部导航 -->
+    <header class="ysw-navbar">
+      <button class="ysw-navbar__back" type="button" onclick="yswGoBack()" aria-label="返回">
+        <svg class="ysw-icon"><use href="#i-back"></use></svg>
+      </button>
+      <span class="ysw-navbar__title">后台管理</span>
+    </header>
+
+    <!-- 后台页内导航 -->
+    <nav class="ysw-admin-nav">
+      <span class="ysw-admin-nav__item ysw-admin-nav__item--active" data-view="dash">数据概览</span>
+      <span class="ysw-admin-nav__item" data-view="jobs">职位管理</span>
+    </nav>
+
+    <!-- 视图一：数据概览 -->
+    <section id="ysw_view_dash">
+      <div class="ysw-admin-hero">
+        <p class="ysw-admin-hero__title">BOSS直聘运营数据看板</p>
+        <p class="ysw-admin-hero__desc">数据来源：data/stats.json 接口 · 每日 0 点更新</p>
+      </div>
+
+      <!-- 指标卡片 -->
+      <div class="ysw-stat-cards" id="ysw_stat_cards"></div>
+
+      <!-- 职位分类分布（柱状图） -->
+      <section class="ysw-panel" style="padding:0">
+        <div class="ysw-chart">
+          <h2 class="ysw-panel__title">在线职位分类分布</h2>
+          <div id="ysw_chart_bars"></div>
+        </div>
+      </section>
+
+      <!-- 本周沟通趋势（SVG折线图） -->
+      <section class="ysw-panel" style="padding:0">
+        <div class="ysw-chart">
+          <h2 class="ysw-panel__title">本周沟通量趋势</h2>
+          <svg id="ysw_chart_line" width="100%" height="150" viewBox="0 0 340 150" preserveAspectRatio="none"></svg>
+        </div>
+      </section>
+
+      <!-- 最新简历 -->
+      <section class="ysw-panel" style="padding:0">
+        <div class="ysw-chart">
+          <h2 class="ysw-panel__title">最新收到简历</h2>
+          <div id="ysw_resume_list"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- 视图二：职位管理 -->
+    <section id="ysw_view_jobs" style="display:none">
+      <div class="ysw-admin-hero" style="background:linear-gradient(120deg,#0f6f8f,#00a9e0)">
+        <p class="ysw-admin-hero__title">职位数据管理</p>
+        <p class="ysw-admin-hero__desc">支持新增、编辑、下架与删除 · 数据本地持久化</p>
+      </div>
+      <div class="ysw-admin-table">
+        <div class="ysw-admin-table__head">
+          <span class="ysw-col-name">职位名称</span>
+          <span class="ysw-col-salary">薪资</span>
+          <span class="ysw-col-status">状态</span>
+          <span class="ysw-col-ops" style="width:86px">操作</span>
+        </div>
+        <div id="ysw_admin_rows"></div>
+      </div>
+      <button class="ysw-admin-add" id="ysw_admin_add" type="button">
+        <svg class="ysw-icon"><use href="#i-plus"></use></svg>
+        新增职位
+      </button>
+    </section>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

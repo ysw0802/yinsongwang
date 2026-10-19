@@ -1,0 +1,35 @@
+{
+  "code": 0,
+  "msg": "success",
+  "data": {
+    "overview": [
+      { "label": "在线职位", "value": 129, "unit": "个", "trend": "+12%" },
+      { "label": "入驻企业", "value": 86, "unit": "家", "trend": "+5%" },
+      { "label": "今日沟通", "value": 342, "unit": "次", "trend": "+18%" },
+      { "label": "简历投递", "value": 157, "unit": "份", "trend": "+9%" }
+    ],
+    "categoryChart": [
+      { "category": "技术", "count": 52 },
+      { "category": "产品", "count": 18 },
+      { "category": "设计", "count": 14 },
+      { "category": "运营", "count": 21 },
+      { "category": "销售", "count": 16 },
+      { "category": "职能", "count": 8 }
+    ],
+    "weeklyLine": [
+      { "day": "周一", "value": 120 },
+      { "day": "周二", "value": 148 },
+      { "day": "周三", "value": 165 },
+      { "day": "周四", "value": 210 },
+      { "day": "周五", "value": 189 },
+      { "day": "周六", "value": 95 },
+      { "day": "周日", "value": 78 }
+    ],
+    "latestResumes": [
+      { "name": "杨同学", "job": "前端开发实习生", "time": "2026-10-15 09:42", "status": "待查看" },
+      { "name": "刘同学", "job": "Java开发工程师", "time": "2026-10-14 20:15", "status": "已查看" },
+      { "name": "张同学", "job": "UI设计师", "time": "2026-10-14 16:08", "status": "待查看" },
+      { "name": "陈同学", "job": "数据分析师", "time": "2026-10-13 11:30", "status": "已沟通" }
+    ]
+  }
+}

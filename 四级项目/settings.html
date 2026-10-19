@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）个人设置页 -->
+  <title>个人设置 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app">
+
+    <!-- 顶部导航 -->
+    <header class="ysw-navbar">
+      <button class="ysw-navbar__back" type="button" onclick="yswGoBack()" aria-label="返回">
+        <svg class="ysw-icon"><use href="#i-back"></use></svg>
+      </button>
+      <span class="ysw-navbar__title">个人设置</span>
+    </header>
+
+    <!-- 个人资料 -->
+    <div class="ysw-history-head" style="padding-bottom:4px">个人资料</div>
+    <nav class="ysw-menu-group">
+      <div class="ysw-cell">
+        <span class="ysw-cell__title">头像</span>
+        <img src="images/avatar.jpg" alt="头像" style="width:38px;height:38px;border-radius:50%;object-fit:cover">
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </div>
+      <button class="ysw-cell" type="button" id="ysw_edit_name">
+        <span class="ysw-cell__title">姓名</span>
+        <span class="ysw-cell__desc" id="ysw_name_val">求职者</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </button>
+      <div class="ysw-cell">
+        <span class="ysw-cell__title">手机号</span>
+        <span class="ysw-cell__desc" id="ysw_phone_val">138****0000</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </div>
+      <button class="ysw-cell" type="button" id="ysw_edit_intent">
+        <span class="ysw-cell__title">求职意向</span>
+        <span class="ysw-cell__desc" id="ysw_intent_val">未设置</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </button>
+    </nav>
+
+    <!-- 通知与隐私 -->
+    <div class="ysw-history-head" style="padding-bottom:4px">通知与隐私</div>
+    <nav class="ysw-menu-group">
+      <div class="ysw-cell">
+        <span class="ysw-cell__title">职位推荐通知</span>
+        <button class="ysw-switch" type="button" data-key="ysw_sw_push" aria-label="职位推荐通知开关"></button>
+      </div>
+      <div class="ysw-cell">
+        <span class="ysw-cell__title">消息声音提醒</span>
+        <button class="ysw-switch" type="button" data-key="ysw_sw_sound" aria-label="消息声音提醒开关"></button>
+      </div>
+      <div class="ysw-cell">
+        <span class="ysw-cell__title">对外隐藏简历</span>
+        <button class="ysw-switch" type="button" data-key="ysw_sw_hide" aria-label="对外隐藏简历开关"></button>
+      </div>
+    </nav>
+
+    <!-- 通用 -->
+    <div class="ysw-history-head" style="padding-bottom:4px">通用</div>
+    <nav class="ysw-menu-group">
+      <button class="ysw-cell" type="button" id="ysw_clear_cache">
+        <span class="ysw-cell__title">清除缓存</span>
+        <span class="ysw-cell__desc" id="ysw_cache_size">1.2MB</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </button>
+      <button class="ysw-cell" type="button" id="ysw_check_update">
+        <span class="ysw-cell__title">检查更新</span>
+        <span class="ysw-cell__desc">v1.0.0</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </button>
+      <a class="ysw-cell" href="admin.html">
+        <span class="ysw-cell__title">后台管理</span>
+        <span class="ysw-cell__desc">职位数据管理</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+    </nav>
+
+    <!-- 退出登录 -->
+    <button class="ysw-logout" type="button" id="ysw_logout">退出登录</button>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

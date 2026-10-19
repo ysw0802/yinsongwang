@@ -1,0 +1,35 @@
+{
+  "name": "zhipin-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "求职直聘 —— BOSS直聘手机APP仿制（Capacitor 跨平台移动应用）| 作者：24001010802 ysw",
+  "author": "24001010802 ysw",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build:www": "node scripts/build-www.mjs",
+    "sync": "npm run build:www && cap sync",
+    "sync:android": "npm run build:www && cap sync android",
+    "sync:ios": "npm run build:www && cap sync ios",
+    "add:android": "cap add android",
+    "add:ios": "cap add ios",
+    "open:android": "cap open android",
+    "open:ios": "cap open ios",
+    "assets": "python scripts/gen-assets.py",
+    "patch:native": "node scripts/patch-native.mjs",
+    "preview": "npm run build:www && node scripts/serve-www.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.3",
+    "@capacitor/keyboard": "^8.0.6",
+    "@capacitor/network": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  }
+}

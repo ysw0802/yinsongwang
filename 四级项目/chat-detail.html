@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）聊天详情（三级页面） -->
+  <title>聊天 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app ysw-app--full ysw-app--chat">
+
+    <!-- 顶部导航 -->
+    <header class="ysw-navbar">
+      <button class="ysw-navbar__back" type="button" onclick="yswGoBack()" aria-label="返回">
+        <svg class="ysw-icon"><use href="#i-back"></use></svg>
+      </button>
+      <span class="ysw-navbar__title" id="ysw_peer_name">聊天</span>
+      <span class="ysw-navbar__extra" style="font-size:12px" id="ysw_peer_status"></span>
+    </header>
+
+    <!-- 聊天主体 -->
+    <main class="ysw-chat-body" id="ysw_chat_body">
+      <div class="ysw-loading" style="padding-top:30%">
+        <span class="ysw-spinner"></span><span>加载中...</span>
+      </div>
+    </main>
+
+    <!-- 底部输入栏 -->
+    <div class="ysw-chat-inputbar">
+      <input type="text" id="ysw_chat_input" placeholder="输入消息..." autocomplete="off" maxlength="200">
+      <button class="ysw-chat-inputbar__send" id="ysw_chat_send" type="button">发送</button>
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/chat-detail.js"></script>
+</body>
+</html>

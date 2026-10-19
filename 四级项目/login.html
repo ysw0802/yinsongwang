@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）登录页 -->
+  <title>登录 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-login ysw-app--full">
+
+    <!-- Logo 区 -->
+    <div class="ysw-login__logo">
+      <img src="images/logo.jpg" alt="BOSS直聘logo">
+      <span class="ysw-login__logo-text">BOSS直聘</span>
+    </div>
+    <p class="ysw-login__slogan">找工作，跟老板直接谈</p>
+
+    <!-- 登录表单 -->
+    <div class="ysw-form">
+      <svg class="ysw-icon"><use href="#i-phone"></use></svg>
+      <input type="tel" id="ysw_phone_input" placeholder="请输入手机号" maxlength="11" autocomplete="off">
+    </div>
+    <div class="ysw-form">
+      <svg class="ysw-icon"><use href="#i-lock"></use></svg>
+      <input type="text" id="ysw_code_input" placeholder="请输入验证码" maxlength="4" autocomplete="off">
+      <button class="ysw-form__code-btn" id="ysw_code_btn" type="button">获取验证码</button>
+    </div>
+    <p class="ysw-form-error" id="ysw_form_error"></p>
+
+    <button class="ysw-login__submit" id="ysw_login_btn" type="button">登录</button>
+
+    <!-- 用户协议 -->
+    <label class="ysw-agreement">
+      <span class="ysw-agreement__check" id="ysw_agree_check">✓</span>
+      <span>我已阅读并同意 <a href="javascript:yswToast('协议为演示内容')">《用户协议》</a> 和 <a href="javascript:yswToast('协议为演示内容')">《隐私政策》</a>，未注册的手机号将自动创建账号</span>
+    </label>
+
+    <!-- 演示提示 -->
+    <p style="margin-top:auto;padding:22px 0 calc(22px + env(safe-area-inset-bottom));text-align:center;font-size:12px;color:var(--ysw-text-light)">
+      演示账号：13812340000 · 验证码任意4位数字
+    </p>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）我的（个人设置入口页） -->
+  <title>我的 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app">
+
+    <!-- 个人信息头部 -->
+    <section class="ysw-me-hero">
+      <div class="ysw-me-hero__row">
+        <img class="ysw-me-hero__avatar" src="images/avatar.jpg" alt="用户头像">
+        <div>
+          <p class="ysw-me-hero__name" id="ysw_me_name">求职者</p>
+          <p class="ysw-me-hero__meta">
+            <svg class="ysw-icon"><use href="#i-shield"></use></svg>
+            <span id="ysw_me_greeting">你好，愿好机会不期而遇</span>
+          </p>
+        </div>
+        <!-- 简历完整度圆环 -->
+        <div class="ysw-me-hero__ring">
+          <svg width="54" height="54" viewBox="0 0 54 54">
+            <circle cx="27" cy="27" r="23" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="5"/>
+            <circle id="ysw_ring" cx="27" cy="27" r="23" fill="none" stroke="#fff" stroke-width="5"
+                    stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="144.5"
+                    style="transition:stroke-dashoffset 1s ease"/>
+          </svg>
+          <span class="ysw-me-hero__ring-val">85%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 数据统计 -->
+    <section class="ysw-me-stats">
+      <a class="ysw-me-stats__item" href="javascript:yswShowCollect()">
+        <p class="ysw-me-stats__val" id="ysw_stat_collect">0</p>
+        <p class="ysw-me-stats__label">收藏职位</p>
+      </a>
+      <a class="ysw-me-stats__item" href="chat.html">
+        <p class="ysw-me-stats__val" id="ysw_stat_chat">0</p>
+        <p class="ysw-me-stats__label">已沟通</p>
+      </a>
+      <a class="ysw-me-stats__item" href="javascript:yswToast('投递记录为演示数据')">
+        <p class="ysw-me-stats__val">6</p>
+        <p class="ysw-me-stats__label">已投递</p>
+      </a>
+      <a class="ysw-me-stats__item" href="javascript:yswToast('更多功能开发中')">
+        <p class="ysw-me-stats__val">12</p>
+        <p class="ysw-me-stats__label">足迹</p>
+      </a>
+    </section>
+
+    <!-- 求职意向 -->
+    <div class="ysw-me-intent" id="ysw_intent_row" style="display:none">
+      <span class="ysw-me-intent__label">求职意向</span>
+      <span class="ysw-me-intent__val" id="ysw_intent_text"></span>
+      <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+    </div>
+
+    <!-- 菜单一：简历与收藏 -->
+    <nav class="ysw-menu-group">
+      <a class="ysw-cell" href="javascript:yswToast('简历为演示数据')">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#00a9e0,#38d0f5)">
+          <svg class="ysw-icon"><use href="#i-resume"></use></svg>
+        </span>
+        <span class="ysw-cell__title">我的简历</span>
+        <span class="ysw-cell__desc">85%</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="ysw-cell" href="javascript:yswShowCollect()">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#f5a623,#ffd25b)">
+          <svg class="ysw-icon"><use href="#i-collect"></use></svg>
+        </span>
+        <span class="ysw-cell__title">收藏的职位</span>
+        <span class="ysw-cell__desc" id="ysw_collect_desc">0个</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="ysw-cell" href="company.html">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#2bbf6b,#6fe3a0)">
+          <svg class="ysw-icon"><use href="#i-company"></use></svg>
+        </span>
+        <span class="ysw-cell__title">感兴趣的公司</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+    </nav>
+
+    <!-- 菜单二：通用设置 -->
+    <nav class="ysw-menu-group">
+      <a class="ysw-cell" href="settings.html">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#6a5cff,#9f8bff)">
+          <svg class="ysw-icon"><use href="#i-setting"></use></svg>
+        </span>
+        <span class="ysw-cell__title">个人设置</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="ysw-cell" href="javascript:yswToast('通知为演示功能')">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#ff7a45,#ffb02e)">
+          <svg class="ysw-icon"><use href="#i-bell"></use></svg>
+        </span>
+        <span class="ysw-cell__title">消息通知</span>
+        <span class="ysw-cell__desc">已开启</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="ysw-cell" href="admin.html">
+        <span class="ysw-cell__icon" style="background:linear-gradient(135deg,#45527a,#7a88b4)">
+          <svg class="ysw-icon"><use href="#i-chart"></use></svg>
+        </span>
+        <span class="ysw-cell__title">后台管理</span>
+        <span class="ysw-cell__desc">管理员</span>
+        <svg class="ysw-icon ysw-cell__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+    </nav>
+
+    <!-- 退出登录 -->
+    <button class="ysw-logout" type="button" id="ysw_logout">退出登录</button>
+
+    <!-- 底部导航 -->
+    <nav id="ysw_tabbar"></nav>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/my.js"></script>
+</body>
+</html>

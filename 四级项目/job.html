@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）职位详情（三级页面/内容页） -->
+  <title>职位详情 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app ysw-app--full">
+
+    <!-- 顶部导航 -->
+    <header class="ysw-navbar">
+      <button class="ysw-navbar__back" type="button" onclick="yswGoBack()" aria-label="返回">
+        <svg class="ysw-icon"><use href="#i-back"></use></svg>
+      </button>
+      <span class="ysw-navbar__title">职位详情</span>
+    </header>
+
+    <!-- 职位头部信息 -->
+    <section class="ysw-job-detail__head">
+      <div class="ysw-job-detail__title-row">
+        <h1 class="ysw-job-detail__title" id="ysw_job_title">加载中...</h1>
+        <span class="ysw-job-detail__salary" id="ysw_job_salary"></span>
+      </div>
+      <div class="ysw-job-detail__meta" id="ysw_job_meta"></div>
+      <p class="ysw-job-detail__addr">
+        <svg class="ysw-icon"><use href="#i-loc"></use></svg>
+        <span id="ysw_job_addr"></span>
+      </p>
+    </section>
+
+    <!-- 福利待遇 -->
+    <section class="ysw-panel">
+      <h2 class="ysw-panel__title">福利待遇</h2>
+      <div class="ysw-welfare" id="ysw_job_welfare"></div>
+    </section>
+
+    <!-- 职位描述 -->
+    <section class="ysw-panel">
+      <h2 class="ysw-panel__title">职位描述</h2>
+      <p class="ysw-panel__text" id="ysw_job_desc"></p>
+    </section>
+
+    <!-- 公司信息 -->
+    <section class="ysw-panel">
+      <h2 class="ysw-panel__title">招聘企业</h2>
+      <a class="ysw-company-row" id="ysw_company_link" href="company.html">
+        <img class="ysw-company-row__logo" id="ysw_company_logo" src="" alt="公司logo">
+        <div>
+          <p class="ysw-company-row__name" id="ysw_company_name"></p>
+          <p class="ysw-company-row__meta" id="ysw_company_meta"></p>
+        </div>
+        <svg class="ysw-icon ysw-company-row__arrow"><use href="#i-arrow"></use></svg>
+      </a>
+    </section>
+
+    <!-- HR 信息 -->
+    <section class="ysw-panel">
+      <h2 class="ysw-panel__title">招聘者</h2>
+      <div class="ysw-hr-card" id="ysw_hr_card"></div>
+    </section>
+
+    <!-- 相似职位 -->
+    <section class="ysw-section">
+      <div class="ysw-section__head">
+        <h2 class="ysw-section__title">相似职位</h2>
+      </div>
+      <ul id="ysw_similar_list"></ul>
+    </section>
+
+    <!-- 底部操作栏：收藏 + 立即沟通 -->
+    <div class="ysw-actionbar">
+      <button class="ysw-actionbar__collect" id="ysw_collect_btn" type="button">
+        <svg class="ysw-icon"><use href="#i-star"></use></svg>
+        <span>收藏</span>
+      </button>
+      <button class="ysw-actionbar__btn" id="ysw_chat_btn" type="button">立即沟通</button>
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/job.js"></script>
+</body>
+</html>

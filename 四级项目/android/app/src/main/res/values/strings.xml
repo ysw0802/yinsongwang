@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">求职直聘</string>
+    <string name="title_activity_main">求职直聘</string>
+    <string name="package_name">com.ysw.zhipin</string>
+    <string name="custom_url_scheme">com.ysw.zhipin</string>
+</resources>

@@ -1,0 +1,55 @@
+{
+  "appId": "com.ysw.zhipin",
+  "appName": "求职直聘",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor",
+    "hostname": "localhost",
+    "allowNavigation": []
+  },
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true,
+    "backgroundColor": "#f4f6f8",
+    "loggingBehavior": "none"
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#f4f6f8",
+    "limitsNavigationsToAppBoundDomains": false,
+    "loggingBehavior": "none"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": false,
+      "backgroundColor": "#00a9e0",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "androidSplashResourceName": "splash",
+      "iosSplashResourceName": "splash",
+      "splashFullScreen": true,
+      "splashImmersive": true,
+      "useDialog": false
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#00a9e0",
+      "overlaysWebView": false
+    },
+    "Keyboard": {
+      "resize": "native",
+      "style": "LIGHT",
+      "resizeOnFullScreen": true
+    },
+    "App": {
+      "disableBackButtonHandler": false
+    },
+    "Network": {
+      "requestPermissions": false
+    }
+  }
+}

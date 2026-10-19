@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）搜索页（二级页面） -->
+  <title>搜索 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app ysw-app--full">
+
+    <!-- 搜索栏 -->
+    <div class="ysw-search-bar">
+      <div class="ysw-search-bar__input-wrap">
+        <svg class="ysw-icon"><use href="#i-search"></use></svg>
+        <input type="search" id="ysw_search_input" placeholder="搜索职位、公司" autocomplete="off">
+      </div>
+      <button class="ysw-search-bar__cancel" id="ysw_search_go" type="button">搜索</button>
+      <button class="ysw-search-bar__cancel" id="ysw_search_cancel" type="button" style="display:none">取消</button>
+    </div>
+
+    <!-- 搜索发现区（历史 + 热门） -->
+    <section id="ysw_discover">
+      <div class="ysw-history-head">
+        <span>搜索历史</span>
+        <button class="ysw-history-head__clear" id="ysw_history_clear" type="button">
+          <svg class="ysw-icon"><use href="#i-trash"></use></svg>清空
+        </button>
+      </div>
+      <div class="ysw-chip-wrap" style="padding:0 14px" id="ysw_history_box"></div>
+
+      <div class="ysw-history-head" style="margin-top:6px">
+        <span>热门搜索</span>
+        <svg class="ysw-icon" style="color:var(--ysw-orange);margin-right:14px"><use href="#i-fire"></use></svg>
+      </div>
+      <ul id="ysw_hot_list" style="background:var(--ysw-card);border-radius:10px;margin:0 12px"></ul>
+    </section>
+
+    <!-- 筛选条 -->
+    <div class="ysw-filter" id="ysw_filter" style="display:none"></div>
+
+    <!-- 搜索结果 -->
+    <ul id="ysw_result_list"></ul>
+
+    <!-- 底部导航 -->
+    <nav id="ysw_tabbar"></nav>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="author" content="24001010802 ysw">
+  <!-- 24001010802 ysw —— BOSS直聘（手机APP仿制）公司详情（三级页面/内容页） -->
+  <title>公司详情 - BOSS直聘 | 24001010802 ysw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ysw-app">
+
+    <!-- 顶部导航 -->
+    <header class="ysw-navbar">
+      <button class="ysw-navbar__back" type="button" onclick="yswGoBack()" aria-label="返回">
+        <svg class="ysw-icon"><use href="#i-back"></use></svg>
+      </button>
+      <span class="ysw-navbar__title">公司详情</span>
+    </header>
+
+    <!-- 公司头部横幅 -->
+    <section class="ysw-company-hero">
+      <div class="ysw-company-hero__row">
+        <img class="ysw-company-hero__logo" id="ysw_c_logo" src="" alt="公司logo">
+        <div>
+          <p class="ysw-company-hero__name" id="ysw_c_name">加载中...</p>
+          <p class="ysw-company-hero__meta" id="ysw_c_meta"></p>
+        </div>
+      </div>
+      <div class="ysw-company-hero__stats" id="ysw_c_stats"></div>
+    </section>
+
+    <!-- 公司介绍 -->
+    <section class="ysw-panel">
+      <h2 class="ysw-panel__title">公司介绍</h2>
+      <p class="ysw-panel__text" id="ysw_c_intro"></p>
+      <p class="ysw-panel__text" style="margin-top:10px;display:flex;align-items:center;gap:4px">
+        <svg class="ysw-icon"><use href="#i-loc"></use></svg><span id="ysw_c_addr"></span>
+      </p>
+    </section>
+
+    <!-- 在招职位 -->
+    <section class="ysw-section">
+      <div class="ysw-section__head">
+        <h2 class="ysw-section__title">在招职位</h2>
+        <span class="ysw-section__more" id="ysw_c_jobcount"></span>
+      </div>
+      <ul id="ysw_c_jobs"></ul>
+    </section>
+
+    <!-- 底部导航 -->
+    <nav id="ysw_tabbar"></nav>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/company-detail.js"></script>
+</body>
+</html>

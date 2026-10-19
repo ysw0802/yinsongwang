@@ -1,0 +1,21 @@
+# 24001010802 ysw —— 四级项目 Git 忽略清单
+
+# Node 依赖（体积大，可通过 npm install 重新生成）
+node_modules/
+
+# Capacitor 构建产物（可通过 npm run build-www 重新生成）
+www/
+
+# Android 构建产物与本地环境配置
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+# iOS 构建产物
+ios/App/build/
+ios/DerivedData/
+
+# 系统杂项
+.DS_Store
+Thumbs.db
