@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>描线图鉴 · Lucide SVG 图标</title>
+  <style>
+    :root {
+      --ysw-mist: #fafbfc;
+      --ysw-ink: #131c26;
+      --ysw-ink-soft: #4e5d6c;
+      --ysw-ink-faint: #93a1ad;
+      --ysw-line: #e4e9ed;
+      --ysw-line-strong: #cfd8de;
+      --ysw-accent: #0d7a6f;
+      --ysw-accent-deep: #0a5d55;
+      --ysw-amber: #b45309;
+      --ysw-card: #ffffff;
+      --ysw-sans: "Helvetica Neue", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      --ysw-mono: "Cascadia Code", Consolas, "SF Mono", "Courier New", monospace;
+      --ysw-ease: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ysw-sans);
+      color: var(--ysw-ink);
+      background-color: var(--ysw-mist);
+      background-image:
+        linear-gradient(rgba(19, 28, 38, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(19, 28, 38, 0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--ysw-accent); color: #fff; }
+
+    /* ── 顶栏 ─────────────────────────── */
+    .ysw_topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1120px; margin: 0 auto; padding: 22px 28px 0;
+    }
+    .ysw_mark {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--ysw-mono); font-size: 13px; letter-spacing: 0.14em;
+      color: var(--ysw-ink-soft); text-transform: uppercase; text-decoration: none;
+    }
+    .ysw_mark-glyph {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border: 1px solid var(--ysw-ink); border-radius: 8px;
+      font-family: var(--ysw-mono); font-size: 15px; font-weight: 700; color: var(--ysw-ink);
+    }
+    .ysw_home-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; letter-spacing: 0.06em; text-decoration: none;
+      color: var(--ysw-ink); border: 1px solid var(--ysw-line-strong); border-radius: 999px;
+      padding: 8px 18px; background: transparent;
+      transition: background 250ms var(--ysw-ease), border-color 250ms var(--ysw-ease), color 250ms var(--ysw-ease);
+    }
+    .ysw_home-link:hover { background: var(--ysw-ink); border-color: var(--ysw-ink); color: var(--ysw-mist); }
+
+    /* ── 图鉴页眉 ─────────────────────── */
+    .ysw_hero {
+      position: relative; max-width: 1120px; margin: 0 auto;
+      padding: 72px 28px 46px; overflow: hidden;
+    }
+    .ysw_hero-watermark {
+      position: absolute; right: -20px; top: -50px; z-index: 0;
+      color: transparent; user-select: none; pointer-events: none;
+    }
+    .ysw_hero-watermark svg {
+      width: 320px; height: 320px; stroke-width: 0.6;
+    }
+    .ysw_hero-inner { position: relative; z-index: 1; }
+    .ysw_kicker {
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--ysw-mono); font-size: 12.5px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--ysw-accent); margin: 0 0 22px;
+    }
+    .ysw_kicker::before { content: ""; width: 44px; height: 1px; background: var(--ysw-accent); }
+    .ysw_title {
+      margin: 0; font-weight: 700;
+      font-size: clamp(44px, 7vw, 84px); line-height: 1.04; letter-spacing: -0.035em;
+    }
+    .ysw_title em { font-style: normal; color: var(--ysw-accent); }
+    .ysw_lede {
+      margin: 26px 0 0; max-width: 560px;
+      font-size: 16px; line-height: 1.9; color: var(--ysw-ink-soft);
+    }
+    .ysw_meta {
+      display: flex; flex-wrap: wrap;
+      margin-top: 42px; border-top: 1px solid var(--ysw-ink); border-bottom: 1px solid var(--ysw-line-strong);
+    }
+    .ysw_meta-item { flex: 1 1 180px; padding: 16px 20px 16px 0; }
+    .ysw_meta-item + .ysw_meta-item { padding-left: 20px; border-left: 1px solid var(--ysw-line-strong); }
+    .ysw_meta-key {
+      display: block; font-family: var(--ysw-mono); font-size: 11px;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--ysw-ink-faint); margin-bottom: 6px;
+    }
+    .ysw_meta-val { font-size: 15px; letter-spacing: 0.02em; }
+
+    /* ── 章节 ─────────────────────────── */
+    .ysw_main { max-width: 1120px; margin: 0 auto; padding: 24px 28px 40px; }
+    .ysw_section { margin-bottom: 72px; }
+    .ysw_section-head {
+      display: flex; align-items: baseline; gap: 18px;
+      margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--ysw-line-strong);
+    }
+    .ysw_section-no {
+      font-family: var(--ysw-mono); font-size: 13px; font-weight: 700;
+      color: var(--ysw-accent); letter-spacing: 0.1em;
+      border: 1px solid var(--ysw-accent); border-radius: 6px; padding: 4px 10px;
+    }
+    .ysw_section-title { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: 0.04em; }
+    .ysw_section-sub { margin-left: auto; font-family: var(--ysw-mono); font-size: 12px; color: var(--ysw-ink-faint); letter-spacing: 0.08em; }
+
+    /* ── 图鉴网格 ─────────────────────── */
+    .ysw_grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 14px; }
+    .ysw_card {
+      background: var(--ysw-card);
+      border: 1px solid var(--ysw-line); border-radius: 10px;
+      padding: 30px 14px 20px; text-align: center;
+      opacity: 0; transform: translateY(16px);
+      animation: ysw_rise 600ms var(--ysw-ease) forwards;
+      transition: transform 350ms var(--ysw-ease), border-color 350ms var(--ysw-ease), box-shadow 350ms var(--ysw-ease);
+    }
+    .ysw_grid .ysw_card:nth-child(1) { animation-delay: 40ms; }
+    .ysw_grid .ysw_card:nth-child(2) { animation-delay: 90ms; }
+    .ysw_grid .ysw_card:nth-child(3) { animation-delay: 140ms; }
+    .ysw_grid .ysw_card:nth-child(4) { animation-delay: 190ms; }
+    .ysw_grid .ysw_card:nth-child(5) { animation-delay: 240ms; }
+    .ysw_grid .ysw_card:nth-child(6) { animation-delay: 290ms; }
+    .ysw_grid .ysw_card:nth-child(7) { animation-delay: 340ms; }
+    .ysw_grid .ysw_card:nth-child(8) { animation-delay: 390ms; }
+    .ysw_grid .ysw_card:nth-child(9) { animation-delay: 440ms; }
+    .ysw_grid .ysw_card:nth-child(10) { animation-delay: 490ms; }
+    .ysw_grid .ysw_card:nth-child(11) { animation-delay: 540ms; }
+    .ysw_grid .ysw_card:nth-child(12) { animation-delay: 590ms; }
+    .ysw_card:hover { transform: translateY(-4px); border-color: var(--ysw-accent); box-shadow: 0 14px 30px -18px rgba(13, 122, 111, 0.4); }
+    @keyframes ysw_rise { to { opacity: 1; transform: translateY(0); } }
+
+    .ysw_icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px; margin: 0 auto 16px;
+      border-radius: 50%; background: rgba(13, 122, 111, 0.06);
+      color: var(--ysw-accent);
+      transition: transform 350ms var(--ysw-ease), background 350ms var(--ysw-ease);
+    }
+    .ysw_icon svg { width: 30px; height: 30px; stroke-width: 1.75; }
+    .ysw_card:hover .ysw_icon { transform: rotate(-6deg) scale(1.1); background: rgba(13, 122, 111, 0.12); }
+    .ysw_label {
+      display: block; font-family: var(--ysw-mono); font-size: 13px;
+      color: var(--ysw-ink); letter-spacing: 0.02em;
+    }
+    .ysw_code {
+      display: inline-block; margin-top: 6px;
+      font-family: var(--ysw-mono); font-size: 11px; letter-spacing: 0.1em;
+      color: var(--ysw-ink-faint);
+      border-top: 1px dotted var(--ysw-line-strong); padding-top: 6px;
+    }
+
+    /* ── 描线粗细阶梯（SVG 的可塑性）── */
+    .ysw_scale {
+      display: flex; align-items: flex-end; justify-content: space-around; flex-wrap: wrap; gap: 28px;
+      border: 1px solid var(--ysw-line); border-radius: 10px;
+      background: var(--ysw-card); padding: 52px 32px 30px;
+    }
+    .ysw_scale-step { text-align: center; }
+    .ysw_scale-icon {
+      display: grid; place-items: center; width: 110px; height: 110px; margin: 0 auto 14px;
+      border: 1px dashed var(--ysw-line-strong); border-radius: 16px;
+      color: var(--ysw-accent); transition: color 350ms var(--ysw-ease), border-color 350ms var(--ysw-ease);
+    }
+    .ysw_scale-icon svg { width: 62px; height: 62px; }
+    .ysw_scale-step:hover .ysw_scale-icon { color: var(--ysw-amber); border-color: var(--ysw-amber); }
+    .ysw_scale-step--w1 .ysw_scale-icon svg { stroke-width: 0.75; }
+    .ysw_scale-step--w2 .ysw_scale-icon svg { stroke-width: 1.25; }
+    .ysw_scale-step--w3 .ysw_scale-icon svg { stroke-width: 2; }
+    .ysw_scale-step--w4 .ysw_scale-icon svg { stroke-width: 2.75; }
+    .ysw_scale-size { font-family: var(--ysw-mono); font-size: 11.5px; color: var(--ysw-ink-faint); letter-spacing: 0.08em; }
+
+    /* ── 注脚 ─────────────────────────── */
+    .ysw_note {
+      margin: 64px 0 0; padding: 26px 30px;
+      border: 1px solid var(--ysw-line); border-left: 3px solid var(--ysw-accent);
+      border-radius: 10px; background: var(--ysw-card);
+      font-size: 14.5px; line-height: 2; color: var(--ysw-ink-soft);
+    }
+    .ysw_note strong { color: var(--ysw-ink); font-weight: 600; }
+    .ysw_footer {
+      max-width: 1120px; margin: 0 auto; padding: 30px 28px 44px;
+      border-top: 1px solid var(--ysw-line-strong);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+      font-family: var(--ysw-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--ysw-ink-faint);
+    }
+    @media (max-width: 640px) {
+      .ysw_hero-watermark svg { width: 190px; height: 190px; }
+      .ysw_section-sub { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ysw_card { animation: none; opacity: 1; transform: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="ysw_body">
+  <nav class="ysw_topbar">
+    <a class="ysw_mark" href="index.html"><span class="ysw_mark-glyph">L</span>ATLAS&nbsp;·&nbsp;NO.02</a>
+    <a class="ysw_home-link" href="index.html">返回首页 index.html</a>
+  </nav>
+
+  <header class="ysw_hero">
+    <span class="ysw_hero-watermark" data-lucide="waypoints" aria-hidden="true"></span>
+    <div class="ysw_hero-inner">
+      <p class="ysw_kicker">Icon Atlas · SVG 描线</p>
+      <h1 class="ysw_title">Lucide<br><em>描线图鉴</em></h1>
+      <p class="ysw_lede">SVG 不是字符，而是可以雕刻的线条。每一笔的粗细、圆角与端点都可调控 —— 本页以图鉴的形式陈列 Lucide 图标，并演示描线宽度的四种气质。</p>
+      <div class="ysw_meta">
+        <div class="ysw_meta-item"><span class="ysw_meta-key">编号 / No.</span><span class="ysw_meta-val">inconfont-2.html</span></div>
+        <div class="ysw_meta-item"><span class="ysw_meta-key">渲染方式 / Method</span><span class="ysw_meta-val">data-lucide → 内联 SVG</span></div>
+        <div class="ysw_meta-item"><span class="ysw_meta-key">资源 / Assets</span><span class="ysw_meta-val">cdn/lucide</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="ysw_main">
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">01</span>
+        <h2 class="ysw_section-title">基础图鉴 · Base Set</h2>
+        <span class="ysw_section-sub">stroke-width: 1.75</span>
+      </div>
+      <div class="ysw_grid">
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="home"></i></span><span class="ysw_label">home</span><span class="ysw_code">house</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="user"></i></span><span class="ysw_label">user</span><span class="ysw_code">person</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="settings"></i></span><span class="ysw_label">settings</span><span class="ysw_code">gear</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="camera"></i></span><span class="ysw_label">camera</span><span class="ysw_code">photo</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="mail"></i></span><span class="ysw_label">mail</span><span class="ysw_code">envelope</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="music"></i></span><span class="ysw_label">music</span><span class="ysw_code">note</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="heart"></i></span><span class="ysw_label">heart</span><span class="ysw_code">favor</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="star"></i></span><span class="ysw_label">star</span><span class="ysw_code">rate</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="bell"></i></span><span class="ysw_label">bell</span><span class="ysw_code">notice</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="circle-user"></i></span><span class="ysw_label">circle-user</span><span class="ysw_code">profile</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="message-circle"></i></span><span class="ysw_label">message-circle</span><span class="ysw_code">chat</span></div>
+        <div class="ysw_card"><span class="ysw_icon"><i data-lucide="bookmark"></i></span><span class="ysw_label">bookmark</span><span class="ysw_code">save</span></div>
+      </div>
+    </section>
+
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">02</span>
+        <h2 class="ysw_section-title">线阶 · 同一图标的四种笔锋</h2>
+        <span class="ysw_section-sub">stroke-width: 0.75 → 2.75</span>
+      </div>
+      <div class="ysw_scale">
+        <div class="ysw_scale-step ysw_scale-step--w1"><span class="ysw_scale-icon"><i data-lucide="feather"></i></span><span class="ysw_scale-size">0.75 · 纤细</span></div>
+        <div class="ysw_scale-step ysw_scale-step--w2"><span class="ysw_scale-icon"><i data-lucide="feather"></i></span><span class="ysw_scale-size">1.25 · 清秀</span></div>
+        <div class="ysw_scale-step ysw_scale-step--w3"><span class="ysw_scale-icon"><i data-lucide="feather"></i></span><span class="ysw_scale-size">2.00 · 标准</span></div>
+        <div class="ysw_scale-step ysw_scale-step--w4"><span class="ysw_scale-icon"><i data-lucide="feather"></i></span><span class="ysw_scale-size">2.75 · 浑厚</span></div>
+      </div>
+    </section>
+
+    <p class="ysw_note"><strong>渲染原理：</strong>页面加载后由 Lucide 脚本将 <strong>&lt;i data-lucide&gt;</strong> 元素原地替换为内联 SVG，继承 <strong>currentColor</strong> 着色，并可用 CSS 直接控制描线粗细 —— 这是字体图标无法做到的笔锋级控制。脚本文件已下载至本地 <strong>cdn/lucide</strong> 目录，可离线访问。</p>
+  </main>
+
+  <footer class="ysw_footer">
+    <span>inconfont-2.html · SVG STROKE ATLAS</span>
+    <span>LINE &amp; VECTOR · MMXXVI</span>
+  </footer>
+
+  <script src="cdn/lucide/lucide.min.js"></script>
+  <script>
+    const ysw_lucide = window.lucide;
+    if (ysw_lucide) {
+      ysw_lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

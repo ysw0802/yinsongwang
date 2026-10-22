@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据类型和运算符</title>
+    <!-- 为了让网页显示好看一点，加一点简单的样式 -->
+    <style>
+        #game-output {
+            font-size: 18px;
+            color: #333;
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            line-height: 2;
+        }
+        #game-output span {
+            display: inline-block;
+            width: 35px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 新增：用于显示数7游戏结果的容器 -->
+        <h2>数7游戏展示 (1-100)</h2>
+        <div id="game-output"></div>
+    </div>
+
+<script>
+    var a = 10,b=4;
+    console.log(a++);
+    console.log(a-b>0?a:b);
+    console.log(true&&false,true||false,!true);
+    var str = "Hello World",num = 10,ble = true,ud,obj={name:"张三",age:20},arr = [1,2,3,4,5];
+    console.log(typeof str,typeof num,typeof ble,typeof ud,typeof obj,typeof arr);
+    console.log(0.1+0,2==0.3);
+    console.log('1'+1,1-'1','11'+1-1);
+    console.log("ysw"-1);
+    console.log("--- 数7游戏开始（1-100） ---");
+    // 1. 定义一个空字符串，用来存放不需要跳过的数字
+    var resultHtml = ""; 
+    for (var i = 1; i <= 100; i++) {
+        // 条件1：7的倍数；条件2：包含数字7
+        if (i % 7 === 0 || String(i).includes('7')) {
+            // 满足条件，不显示该数字，跳过
+            continue;
+        }
+        // 2. 不满足条件时，不再打印到控制台，而是拼接到字符串中
+        // 使用 <span> 包裹数字，让网页排版整齐
+        resultHtml += "<span>" + i + "</span>"; 
+    }
+    // 3. 循环结束后，将拼接好的内容一次性放到页面指定的 div 中
+    document.getElementById("game-output").innerHTML = resultHtml;
+    console.log("--- 数7游戏已渲染至网页 ---");
+</script>
+</body>
+</html>

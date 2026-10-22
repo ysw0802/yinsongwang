@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符样张 · Font Awesome 字体图标</title>
+  <link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+  <style>
+    :root {
+      --ysw-paper: #faf9f5;
+      --ysw-ink: #1b1d2e;
+      --ysw-ink-soft: #5c5f74;
+      --ysw-ink-faint: #989aac;
+      --ysw-line: #e6e2d6;
+      --ysw-line-strong: #d5d0c0;
+      --ysw-accent: #3f3ac2;
+      --ysw-accent-deep: #2c288f;
+      --ysw-ember: #bf4d1e;
+      --ysw-card: #fffdf9;
+      --ysw-serif: Georgia, "Times New Roman", "Songti SC", "SimSun", serif;
+      --ysw-sans: "Helvetica Neue", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      --ysw-mono: "Cascadia Code", Consolas, "SF Mono", "Courier New", monospace;
+      --ysw-ease: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--ysw-sans);
+      color: var(--ysw-ink);
+      background-color: var(--ysw-paper);
+      background-image: radial-gradient(rgba(27, 29, 46, 0.055) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--ysw-accent); color: #fff; }
+
+    /* ── 顶栏 ─────────────────────────── */
+    .ysw_topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1120px; margin: 0 auto; padding: 22px 28px 0;
+    }
+    .ysw_mark {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--ysw-mono); font-size: 13px; letter-spacing: 0.14em;
+      color: var(--ysw-ink-soft); text-transform: uppercase; text-decoration: none;
+    }
+    .ysw_mark-glyph {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border: 1px solid var(--ysw-ink); border-radius: 50%;
+      font-family: var(--ysw-serif); font-style: italic; font-size: 17px; color: var(--ysw-ink);
+    }
+    .ysw_home-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; letter-spacing: 0.06em; text-decoration: none;
+      color: var(--ysw-ink); border: 1px solid var(--ysw-line-strong); border-radius: 999px;
+      padding: 8px 18px; background: transparent;
+      transition: background 250ms var(--ysw-ease), border-color 250ms var(--ysw-ease), color 250ms var(--ysw-ease);
+    }
+    .ysw_home-link:hover { background: var(--ysw-ink); border-color: var(--ysw-ink); color: var(--ysw-paper); }
+
+    /* ── 样张页眉 ─────────────────────── */
+    .ysw_hero {
+      position: relative; max-width: 1120px; margin: 0 auto;
+      padding: 72px 28px 46px; overflow: hidden;
+    }
+    .ysw_hero-watermark {
+      position: absolute; right: -30px; top: -60px; z-index: 0;
+      font-family: "Font Awesome 6 Free"; font-weight: 900;
+      font-size: 340px; line-height: 1; color: transparent;
+      -webkit-text-stroke: 1px rgba(63, 58, 194, 0.13);
+      user-select: none; pointer-events: none;
+    }
+    .ysw_hero-inner { position: relative; z-index: 1; }
+    .ysw_kicker {
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--ysw-mono); font-size: 12.5px; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--ysw-ember); margin: 0 0 22px;
+    }
+    .ysw_kicker::before { content: ""; width: 44px; height: 1px; background: var(--ysw-ember); }
+    .ysw_title {
+      margin: 0; font-family: var(--ysw-serif); font-weight: 400;
+      font-size: clamp(44px, 7vw, 84px); line-height: 1.02; letter-spacing: -0.02em;
+    }
+    .ysw_title em { font-style: italic; color: var(--ysw-accent); }
+    .ysw_lede {
+      margin: 26px 0 0; max-width: 560px;
+      font-size: 16px; line-height: 1.9; color: var(--ysw-ink-soft);
+    }
+    .ysw_meta {
+      display: flex; flex-wrap: wrap; gap: 0;
+      margin-top: 42px; border-top: 1px solid var(--ysw-ink); border-bottom: 1px solid var(--ysw-line-strong);
+    }
+    .ysw_meta-item {
+      flex: 1 1 180px; padding: 16px 20px 16px 0;
+    }
+    .ysw_meta-item + .ysw_meta-item { padding-left: 20px; border-left: 1px solid var(--ysw-line-strong); }
+    .ysw_meta-key {
+      display: block; font-family: var(--ysw-mono); font-size: 11px;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--ysw-ink-faint); margin-bottom: 6px;
+    }
+    .ysw_meta-val { font-size: 15px; letter-spacing: 0.02em; }
+
+    /* ── 章节 ─────────────────────────── */
+    .ysw_main { max-width: 1120px; margin: 0 auto; padding: 24px 28px 40px; }
+    .ysw_section { margin-bottom: 72px; }
+    .ysw_section-head {
+      display: flex; align-items: baseline; gap: 18px;
+      margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--ysw-line-strong);
+    }
+    .ysw_section-no {
+      font-family: var(--ysw-serif); font-style: italic; font-size: 30px;
+      color: var(--ysw-accent); line-height: 1;
+    }
+    .ysw_section-title { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: 0.04em; }
+    .ysw_section-sub { margin-left: auto; font-family: var(--ysw-mono); font-size: 12px; color: var(--ysw-ink-faint); letter-spacing: 0.08em; }
+
+    /* ── 样张网格 ─────────────────────── */
+    .ysw_grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 14px; }
+    .ysw_card {
+      position: relative;
+      background: var(--ysw-card);
+      border: 1px solid var(--ysw-line); border-radius: 4px;
+      padding: 30px 14px 20px; text-align: center;
+      opacity: 0; transform: translateY(16px);
+      animation: ysw_rise 600ms var(--ysw-ease) forwards;
+      transition: transform 350ms var(--ysw-ease), border-color 350ms var(--ysw-ease), box-shadow 350ms var(--ysw-ease);
+    }
+    .ysw_grid .ysw_card:nth-child(1) { animation-delay: 40ms; }
+    .ysw_grid .ysw_card:nth-child(2) { animation-delay: 90ms; }
+    .ysw_grid .ysw_card:nth-child(3) { animation-delay: 140ms; }
+    .ysw_grid .ysw_card:nth-child(4) { animation-delay: 190ms; }
+    .ysw_grid .ysw_card:nth-child(5) { animation-delay: 240ms; }
+    .ysw_grid .ysw_card:nth-child(6) { animation-delay: 290ms; }
+    .ysw_card::after {
+      content: ""; position: absolute; inset: 6px;
+      border: 1px solid transparent; border-radius: 2px; pointer-events: none;
+      transition: border-color 350ms var(--ysw-ease);
+    }
+    .ysw_card:hover { transform: translateY(-4px); border-color: var(--ysw-accent); box-shadow: 0 14px 30px -18px rgba(63, 58, 194, 0.35); }
+    .ysw_card:hover::after { border-color: rgba(63, 58, 194, 0.25); }
+    @keyframes ysw_rise { to { opacity: 1; transform: translateY(0); } }
+
+    .ysw_icon {
+      display: block; margin: 0 auto 16px; font-size: 40px; line-height: 1;
+      color: var(--ysw-ink); transition: color 350ms var(--ysw-ease), transform 350ms var(--ysw-ease);
+    }
+    .ysw_card:hover .ysw_icon { color: var(--ysw-accent); transform: scale(1.12); }
+    .ysw_icon--solid { font-family: "Font Awesome 6 Free"; font-weight: 900; }
+    .ysw_icon--regular { font-family: "Font Awesome 6 Free"; font-weight: 400; }
+    .ysw_icon--brands { font-family: "Font Awesome 6 Brands"; font-weight: 400; }
+    .ysw_icon--house::before { content: "\f015"; }
+    .ysw_icon--user::before { content: "\f007"; }
+    .ysw_icon--gear::before { content: "\f013"; }
+    .ysw_icon--camera::before { content: "\f030"; }
+    .ysw_icon--envelope::before { content: "\f0e0"; }
+    .ysw_icon--music::before { content: "\f001"; }
+    .ysw_icon--heart::before { content: "\f004"; }
+    .ysw_icon--star::before { content: "\f005"; }
+    .ysw_icon--bell::before { content: "\f0f3"; }
+    .ysw_icon--circle-user::before { content: "\f2bd"; }
+    .ysw_icon--comment::before { content: "\f075"; }
+    .ysw_icon--bookmark::before { content: "\f02e"; }
+    .ysw_icon--github::before { content: "\f09b"; }
+    .ysw_icon--weixin::before { content: "\f1d7"; }
+    .ysw_icon--html5::before { content: "\f13b"; }
+    .ysw_icon--css3-alt::before { content: "\f38b"; }
+    .ysw_icon--js::before { content: "\f3b8"; }
+    .ysw_icon--chrome::before { content: "\f268"; }
+
+    .ysw_label {
+      display: block; font-family: var(--ysw-mono); font-size: 13px;
+      color: var(--ysw-ink); letter-spacing: 0.02em;
+    }
+    .ysw_code {
+      display: inline-block; margin-top: 6px;
+      font-family: var(--ysw-mono); font-size: 11px; letter-spacing: 0.1em;
+      color: var(--ysw-ink-faint);
+      border-top: 1px dotted var(--ysw-line-strong); padding-top: 6px;
+    }
+
+    /* ── 字号阶梯（字体图标的可伸缩性）── */
+    .ysw_scale {
+      display: flex; align-items: flex-end; justify-content: space-around; flex-wrap: wrap; gap: 28px;
+      border: 1px solid var(--ysw-line); border-radius: 4px;
+      background: var(--ysw-card); padding: 52px 32px 30px;
+    }
+    .ysw_scale-step { text-align: center; }
+    .ysw_scale-icon {
+      font-family: "Font Awesome 6 Free"; font-weight: 900; line-height: 1;
+      color: var(--ysw-accent); display: block; margin: 0 auto 14px;
+      transition: color 350ms var(--ysw-ease);
+    }
+    .ysw_scale-step:hover .ysw_scale-icon { color: var(--ysw-ember); }
+    .ysw_scale-size { font-family: var(--ysw-mono); font-size: 11.5px; color: var(--ysw-ink-faint); letter-spacing: 0.08em; }
+
+    /* ── 注脚 ─────────────────────────── */
+    .ysw_note {
+      margin: 64px 0 0; padding: 26px 30px;
+      border: 1px solid var(--ysw-line); border-left: 3px solid var(--ysw-ember);
+      border-radius: 4px; background: var(--ysw-card);
+      font-size: 14.5px; line-height: 2; color: var(--ysw-ink-soft);
+    }
+    .ysw_note strong { color: var(--ysw-ink); font-weight: 600; }
+    .ysw_footer {
+      max-width: 1120px; margin: 0 auto; padding: 30px 28px 44px;
+      border-top: 1px solid var(--ysw-line-strong);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+      font-family: var(--ysw-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--ysw-ink-faint);
+    }
+    @media (max-width: 640px) {
+      .ysw_hero-watermark { font-size: 200px; opacity: 0.7; }
+      .ysw_section-sub { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ysw_card { animation: none; opacity: 1; transform: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="ysw_body">
+  <nav class="ysw_topbar">
+    <a class="ysw_mark" href="index.html"><span class="ysw_mark-glyph">F</span>SPECIMEN&nbsp;·&nbsp;NO.01</a>
+    <a class="ysw_home-link" href="index.html"><i class="ysw_icon--solid ysw_icon--house" aria-hidden="true" style="font-size:13px;"></i>返回首页 index.html</a>
+  </nav>
+
+  <header class="ysw_hero">
+    <span class="ysw_hero-watermark ysw_icon--solid ysw_icon--music" aria-hidden="true"></span>
+    <div class="ysw_hero-inner">
+      <p class="ysw_kicker">Icon Specimen · 字体图标</p>
+      <h1 class="ysw_title">Font&nbsp;<em>Awesome</em><br>字符样张</h1>
+      <p class="ysw_lede">每一个图标都是一个字符。字体的形状随字号自由缩放，如同铅字在印刷版上排列 —— 本页以样张的形式陈列 Font Awesome 字体图标的三种字重。</p>
+      <div class="ysw_meta">
+        <div class="ysw_meta-item"><span class="ysw_meta-key">编号 / No.</span><span class="ysw_meta-val">iconfont-1.html</span></div>
+        <div class="ysw_meta-item"><span class="ysw_meta-key">渲染方式 / Method</span><span class="ysw_meta-val">Web 字体 + Unicode</span></div>
+        <div class="ysw_meta-item"><span class="ysw_meta-key">资源 / Assets</span><span class="ysw_meta-val">cdn/fontawesome</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="ysw_main">
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">I</span>
+        <h2 class="ysw_section-title">Solid · 实心字重</h2>
+        <span class="ysw_section-sub">font-weight: 900</span>
+      </div>
+      <div class="ysw_grid">
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--house" aria-hidden="true"></i><span class="ysw_label">house</span><span class="ysw_code">U+F015</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--user" aria-hidden="true"></i><span class="ysw_label">user</span><span class="ysw_code">U+F007</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--gear" aria-hidden="true"></i><span class="ysw_label">gear</span><span class="ysw_code">U+F013</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--camera" aria-hidden="true"></i><span class="ysw_label">camera</span><span class="ysw_code">U+F030</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--envelope" aria-hidden="true"></i><span class="ysw_label">envelope</span><span class="ysw_code">U+F0E0</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--solid ysw_icon--music" aria-hidden="true"></i><span class="ysw_label">music</span><span class="ysw_code">U+F001</span></div>
+      </div>
+    </section>
+
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">II</span>
+        <h2 class="ysw_section-title">Regular · 线框字重</h2>
+        <span class="ysw_section-sub">font-weight: 400</span>
+      </div>
+      <div class="ysw_grid">
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--heart" aria-hidden="true"></i><span class="ysw_label">heart</span><span class="ysw_code">U+F004</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--star" aria-hidden="true"></i><span class="ysw_label">star</span><span class="ysw_code">U+F005</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--bell" aria-hidden="true"></i><span class="ysw_label">bell</span><span class="ysw_code">U+F0F3</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--circle-user" aria-hidden="true"></i><span class="ysw_label">circle-user</span><span class="ysw_code">U+F2BD</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--comment" aria-hidden="true"></i><span class="ysw_label">comment</span><span class="ysw_code">U+F075</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--regular ysw_icon--bookmark" aria-hidden="true"></i><span class="ysw_label">bookmark</span><span class="ysw_code">U+F02E</span></div>
+      </div>
+    </section>
+
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">III</span>
+        <h2 class="ysw_section-title">Brands · 品牌字库</h2>
+        <span class="ysw_section-sub">font-family: brands</span>
+      </div>
+      <div class="ysw_grid">
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--github" aria-hidden="true"></i><span class="ysw_label">github</span><span class="ysw_code">U+F09B</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--weixin" aria-hidden="true"></i><span class="ysw_label">weixin</span><span class="ysw_code">U+F1D7</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--html5" aria-hidden="true"></i><span class="ysw_label">html5</span><span class="ysw_code">U+F13B</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--css3-alt" aria-hidden="true"></i><span class="ysw_label">css3-alt</span><span class="ysw_code">U+F38B</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--js" aria-hidden="true"></i><span class="ysw_label">js</span><span class="ysw_code">U+F3B8</span></div>
+        <div class="ysw_card"><i class="ysw_icon ysw_icon--brands ysw_icon--chrome" aria-hidden="true"></i><span class="ysw_label">chrome</span><span class="ysw_code">U+F268</span></div>
+      </div>
+    </section>
+
+    <section class="ysw_section">
+      <div class="ysw_section-head">
+        <span class="ysw_section-no">IV</span>
+        <h2 class="ysw_section-title">字阶 · 同一字形的不同字号</h2>
+        <span class="ysw_section-sub">scalable glyphs</span>
+      </div>
+      <div class="ysw_scale">
+        <div class="ysw_scale-step"><i class="ysw_scale-icon ysw_icon--house" style="font-size:24px;" aria-hidden="true"></i><span class="ysw_scale-size">24 px</span></div>
+        <div class="ysw_scale-step"><i class="ysw_scale-icon ysw_icon--house" style="font-size:38px;" aria-hidden="true"></i><span class="ysw_scale-size">38 px</span></div>
+        <div class="ysw_scale-step"><i class="ysw_scale-icon ysw_icon--house" style="font-size:56px;" aria-hidden="true"></i><span class="ysw_scale-size">56 px</span></div>
+        <div class="ysw_scale-step"><i class="ysw_scale-icon ysw_icon--house" style="font-size:78px;" aria-hidden="true"></i><span class="ysw_scale-size">78 px</span></div>
+        <div class="ysw_scale-step"><i class="ysw_scale-icon ysw_icon--house" style="font-size:104px;" aria-hidden="true"></i><span class="ysw_scale-size">104 px</span></div>
+      </div>
+    </section>
+
+    <p class="ysw_note"><strong>渲染原理：</strong>本页不依赖任何图标类名，直接以 CSS 的 <strong>::before 伪元素</strong> 写入 Font Awesome 字体的 Unicode 码位（如 <strong>content: "\f015"</strong>），配合 @font-face 声明的三套字库完成渲染。CSS 与 webfonts 均已下载至本地 <strong>cdn/fontawesome</strong> 目录，可离线访问。</p>
+  </main>
+
+  <footer class="ysw_footer">
+    <span>iconfont-1.html · FONT GLYPH SPECIMEN</span>
+    <span>TYPE &amp; CHARACTER · MMXXVI</span>
+  </footer>
+</body>
+</html>

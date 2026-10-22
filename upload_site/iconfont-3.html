@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#3f3ac2">
+  <title>移动端底部导航 · 字体图标版</title>
+  <style>
+    @font-face {
+      font-family: "yswIconfont";
+      src: url("font/iconfont.woff2") format("woff2"),
+           url("font/iconfont.woff") format("woff"),
+           url("font/iconfont.ttf") format("truetype");
+      font-display: block;
+    }
+    :root {
+      --ysw-paper: #f7f7fb;
+      --ysw-card: #ffffff;
+      --ysw-ink: #1b1d2e;
+      --ysw-ink-soft: #5c5f74;
+      --ysw-ink-faint: #9a9cb0;
+      --ysw-line: #e7e6ef;
+      --ysw-accent: #3f3ac2;
+      --ysw-accent-soft: rgba(63, 58, 194, 0.09);
+      --ysw-badge: #e5484d;
+      --ysw-sans: "Helvetica Neue", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      --ysw-mono: Consolas, "Cascadia Code", "Courier New", monospace;
+      --ysw-ease: cubic-bezier(0.32, 0.72, 0, 1);
+      --ysw-nav-h: 64px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: var(--ysw-sans); color: var(--ysw-ink);
+      background: #eceaf2; -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--ysw-accent); color: #fff; }
+
+    /* ── 应用容器：移动端自适应宽度 ───── */
+    .ysw_app {
+      max-width: 480px; min-height: 100dvh; margin: 0 auto;
+      background: var(--ysw-paper); position: relative;
+      box-shadow: 0 0 0 1px var(--ysw-line);
+    }
+
+    /* ── 顶部应用栏 ──────────────────── */
+    .ysw_header {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; background: rgba(247, 247, 251, 0.9);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--ysw-line);
+    }
+    .ysw_header-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .ysw_header-mark {
+      width: 34px; height: 34px; flex: none; display: grid; place-items: center;
+      border-radius: 10px; background: var(--ysw-accent); color: #fff;
+      font-family: var(--ysw-mono); font-size: 15px; font-weight: 700;
+    }
+    .ysw_header-name { font-size: 16px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
+    .ysw_header-sub { font-size: 11px; color: var(--ysw-ink-faint); font-family: var(--ysw-mono); letter-spacing: 0.08em; white-space: nowrap; }
+    .ysw_home-link {
+      flex: none; display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--ysw-ink); text-decoration: none;
+      border: 1px solid var(--ysw-line); border-radius: 999px; padding: 6px 12px; background: var(--ysw-card);
+      transition: background 250ms var(--ysw-ease), color 250ms var(--ysw-ease), border-color 250ms var(--ysw-ease);
+    }
+    .ysw_home-link:hover { background: var(--ysw-ink); border-color: var(--ysw-ink); color: #fff; }
+
+    /* ── 内容区 ──────────────────────── */
+    .ysw_content { padding: 18px 18px calc(var(--ysw-nav-h) + env(safe-area-inset-bottom, 0px) + 76px); }
+    .ysw_panel-title { margin: 4px 2px 14px; font-size: 22px; letter-spacing: 0.01em; }
+    .ysw_panel-title em { font-style: normal; color: var(--ysw-accent); }
+    .ysw_panel-desc { margin: -6px 2px 20px; font-size: 13px; line-height: 1.9; color: var(--ysw-ink-soft); }
+
+    .ysw_list { display: grid; gap: 12px; }
+    .ysw_item {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--ysw-card); border: 1px solid var(--ysw-line);
+      border-radius: 14px; padding: 16px;
+      transition: transform 350ms var(--ysw-ease), border-color 350ms var(--ysw-ease);
+    }
+    .ysw_item:active { transform: scale(0.985); border-color: var(--ysw-accent); }
+    .ysw_item-icon {
+      flex: none; width: 44px; height: 44px; display: grid; place-items: center;
+      border-radius: 12px; background: var(--ysw-accent-soft);
+      color: var(--ysw-accent); font-size: 22px;
+    }
+    .ysw_item-body { min-width: 0; flex: 1; }
+    .ysw_item-name { font-size: 14.5px; font-weight: 600; margin: 0 0 4px; }
+    .ysw_item-text { font-size: 12px; color: var(--ysw-ink-faint); line-height: 1.7; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ysw_item-tag {
+      flex: none; font-family: var(--ysw-mono); font-size: 10.5px; letter-spacing: 0.06em;
+      color: var(--ysw-ink-faint); border: 1px solid var(--ysw-line); border-radius: 6px; padding: 3px 7px;
+    }
+
+    .ysw_tech-note {
+      margin-top: 22px; padding: 16px;
+      border: 1px solid var(--ysw-line); border-left: 3px solid var(--ysw-accent);
+      border-radius: 12px; background: var(--ysw-card);
+      font-size: 12.5px; line-height: 2; color: var(--ysw-ink-soft);
+    }
+    .ysw_tech-note strong { color: var(--ysw-ink); }
+    .ysw_tech-note code { font-family: var(--ysw-mono); font-size: 11.5px; background: var(--ysw-accent-soft); color: var(--ysw-accent); border-radius: 4px; padding: 1px 5px; }
+
+    /* ── 底部固定导航（自适应宽度）───── */
+    .ysw_navbar {
+      position: fixed; z-index: 30;
+      left: 50%; bottom: 0; transform: translateX(-50%);
+      width: 100%; max-width: 480px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      padding: 8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--ysw-line);
+      box-shadow: 0 -8px 24px -18px rgba(27, 29, 46, 0.25);
+    }
+    .ysw_tab {
+      appearance: none; border: 0; background: transparent; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 4px 0 2px; font-family: inherit; color: var(--ysw-ink-faint);
+      -webkit-tap-highlight-color: transparent;
+      transition: color 250ms var(--ysw-ease);
+    }
+    .ysw_tab-icon {
+      position: relative;
+      width: 56px; height: 30px; display: grid; place-items: center;
+      border-radius: 999px;
+      transition: background 350ms var(--ysw-ease);
+    }
+    .ysw_tab-icon .ysw_fonticon { font-size: 22px; line-height: 1; transition: transform 350ms var(--ysw-ease); }
+    .ysw_tab-label { font-size: 11px; letter-spacing: 0.05em; }
+    .ysw_tab--active { color: var(--ysw-accent); font-weight: 600; }
+    .ysw_tab--active .ysw_tab-icon { background: var(--ysw-accent-soft); }
+    .ysw_tab--active .ysw_tab-icon .ysw_fonticon { transform: translateY(-1px) scale(1.08); }
+
+    /* 数字徽章：位于图标右上角 */
+    .ysw_badge {
+      position: absolute; top: -4px; right: 8px;
+      min-width: 17px; height: 17px; padding: 0 4px;
+      display: grid; place-items: center;
+      border-radius: 999px; background: var(--ysw-badge);
+      border: 2px solid #fff; box-sizing: content-box;
+      color: #fff; font-size: 10px; font-weight: 700; line-height: 1;
+      font-family: var(--ysw-mono); letter-spacing: 0;
+    }
+    /* 红点：位于图标右上角 */
+    .ysw_dot {
+      position: absolute; top: 0; right: 14px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--ysw-badge); border: 2px solid #fff; box-sizing: content-box;
+    }
+
+    .ysw_footnote {
+      max-width: 480px; margin: 0 auto; padding: 18px 18px 26px;
+      text-align: center; font-family: var(--ysw-mono);
+      font-size: 11px; letter-spacing: 0.1em; color: var(--ysw-ink-faint);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="ysw_body">
+  <div class="ysw_app">
+    <header class="ysw_header">
+      <div class="ysw_header-title">
+        <span class="ysw_header-mark">F</span>
+        <div>
+          <div class="ysw_header-name">图标工作台</div>
+          <div class="ysw_header-sub">FONT TABBAR · NO.03</div>
+        </div>
+      </div>
+      <a class="ysw_home-link" href="index.html">返回首页</a>
+    </header>
+
+    <main class="ysw_content">
+      <h1 class="ysw_panel-title">当前页面：<em id="ysw_panel_name">功能</em></h1>
+      <p class="ysw_panel-desc">底部导航固定于视口底部，四等分栅格自适应宽度；图标右上角携带数字徽章与红点，提示未读状态。点击下方列表可体验导航切换。</p>
+
+      <div class="ysw_list">
+        <div class="ysw_item">
+          <span class="ysw_item-icon"><i class="ysw_fonticon ysw_fonticon--func" aria-hidden="true"></i></span>
+          <div class="ysw_item-body">
+            <p class="ysw_item-name">功能项 · 图标分类</p>
+            <p class="ysw_item-text">字体图标的字号即尺寸，一行 CSS 即可缩放</p>
+          </div>
+          <span class="ysw_item-tag">e67b</span>
+        </div>
+        <div class="ysw_item">
+          <span class="ysw_item-icon"><i class="ysw_fonticon ysw_fonticon--msg" aria-hidden="true"></i></span>
+          <div class="ysw_item-body">
+            <p class="ysw_item-name">信息 · 未读徽章</p>
+            <p class="ysw_item-text">右上角数字徽章显示 6 条未读，胶囊造型</p>
+          </div>
+          <span class="ysw_item-tag">e67e</span>
+        </div>
+        <div class="ysw_item">
+          <span class="ysw_item-icon"><i class="ysw_fonticon ysw_fonticon--cmt" aria-hidden="true"></i></span>
+          <div class="ysw_item-body">
+            <p class="ysw_item-name">注释 · 轻量提醒</p>
+            <p class="ysw_item-text">不显示数量时以红点示意，克制而不喧宾夺主</p>
+          </div>
+          <span class="ysw_item-tag">e680</span>
+        </div>
+        <div class="ysw_item">
+          <span class="ysw_item-icon"><i class="ysw_fonticon ysw_fonticon--sec" aria-hidden="true"></i></span>
+          <div class="ysw_item-body">
+            <p class="ysw_item-name">信息安全需求 · 大额未读</p>
+            <p class="ysw_item-text">数量超过 99 时折叠为「99+」，避免溢出</p>
+          </div>
+          <span class="ysw_item-tag">e686</span>
+        </div>
+      </div>
+
+      <p class="ysw_tech-note"><strong>渲染原理：</strong>本页通过 <code>@font-face</code> 加载本地 <code>font/iconfont.woff2</code> 字库，以 <code>::before</code> 伪元素写入 Unicode 码位（如 <code>content: "\e67b"</code>）渲染字体图标；徽章与红点均为绝对定位的角标元素。</p>
+    </main>
+
+    <div class="ysw_footnote">iconfont-3.html · FONT GLYPH TABBAR</div>
+  </div>
+
+  <nav class="ysw_navbar" aria-label="底部导航">
+    <button class="ysw_tab ysw_tab--active" type="button" data-ysw-label="功能" aria-current="page">
+      <span class="ysw_tab-icon"><i class="ysw_fonticon ysw_fonticon--func" aria-hidden="true"></i></span>
+      <span class="ysw_tab-label">功能</span>
+    </button>
+    <button class="ysw_tab" type="button" data-ysw-label="消息">
+      <span class="ysw_tab-icon"><i class="ysw_fonticon ysw_fonticon--msg" aria-hidden="true"></i><span class="ysw_badge">6</span></span>
+      <span class="ysw_tab-label">消息</span>
+    </button>
+    <button class="ysw_tab" type="button" data-ysw-label="评论">
+      <span class="ysw_tab-icon"><i class="ysw_fonticon ysw_fonticon--cmt" aria-hidden="true"></i><span class="ysw_dot" aria-label="有新内容"></span></span>
+      <span class="ysw_tab-label">评论</span>
+    </button>
+    <button class="ysw_tab" type="button" data-ysw-label="安全">
+      <span class="ysw_tab-icon"><i class="ysw_fonticon ysw_fonticon--sec" aria-hidden="true"></i><span class="ysw_badge">99+</span></span>
+      <span class="ysw_tab-label">安全</span>
+    </button>
+  </nav>
+
+  <script>
+    const ysw_tabs = document.querySelectorAll(".ysw_tab");
+    const ysw_panelName = document.getElementById("ysw_panel_name");
+    ysw_tabs.forEach((ysw_tab) => {
+      ysw_tab.addEventListener("click", () => {
+        ysw_tabs.forEach((ysw_item) => {
+          ysw_item.classList.remove("ysw_tab--active");
+          ysw_item.removeAttribute("aria-current");
+        });
+        ysw_tab.classList.add("ysw_tab--active");
+        ysw_tab.setAttribute("aria-current", "page");
+        ysw_panelName.textContent = ysw_tab.dataset.yswLabel;
+      });
+    });
+  </script>
+</body>
+</html>
