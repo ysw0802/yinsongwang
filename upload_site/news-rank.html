@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新闻排行榜 · 点击排行 / 评论排行</title>
+<!--
+  文件名称：news-rank.html
+  作    者：尹松旺
+  建立时间：2026-11-02
+  使用模型：GLM-5.3-Flash
+  功能简介：新闻排行榜页面（课堂测试）。顶部"点击排行 / 评论排行"两个
+            选项卡，点击排行默认选中；榜单由 js/ysw_rank.js 根据数据数组
+            动态渲染（createElement 逐行生成），排名前三数字暖色高亮；
+            选项卡切换复用 js/ysw_tabs.js 可复用组件。
+-->
+<style>
+  :root {
+    --ysw-primary: #2f6bff;
+    --ysw-ink: #333;
+    --ysw-ink-soft: #999;
+    --ysw-line: #eee;
+    --ysw-hot: #f04142;
+    --ysw-orange: #fa7d19;
+    --ysw-yellow: #faa519;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    background: #f4f6fa;
+    color: var(--ysw-ink);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 30px 16px;
+  }
+  .ysw_page { width: 100%; max-width: 620px; }
+
+  /* 选项卡（结构沿用 ysw_tabs 组件约定） */
+  .ysw_tabs {
+    background: #fff;
+    border: 1px solid #e6e9f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(20, 28, 48, .08);
+  }
+  .ysw_tab-bar {
+    display: flex;
+    border-bottom: 2px solid #e6e9f0;
+    background: #fff;
+  }
+  .ysw_tab-btn {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    letter-spacing: 2px;
+    transition: color .2s;
+  }
+  .ysw_tab-btn:hover { color: var(--ysw-primary); }
+  .ysw_tab-btn.ysw_active { color: var(--ysw-primary); font-weight: 700; }
+  .ysw_tab-btn.ysw_active::after {
+    content: "";
+    position: absolute;
+    left: 32%; right: 32%; bottom: -2px;
+    height: 2px;
+    background: var(--ysw-primary);
+  }
+  .ysw_tab-panel { display: none; padding: 4px 20px 8px; }
+  .ysw_tab-panel.ysw_active { display: block; animation: ysw_fade .25s ease; }
+  @keyframes ysw_fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* 榜单行：排名 + 标题 + 数值 */
+  .ysw_rank-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px dashed var(--ysw-line);
+    font-size: 14px;
+  }
+  .ysw_rank-row:last-child { border-bottom: none; }
+  .ysw_rank-num {
+    flex: none;
+    width: 20px;
+    text-align: center;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 15px;
+    color: #b8bfcc;
+  }
+  .ysw_rank-num.ysw_r1 { color: var(--ysw-hot); }
+  .ysw_rank-num.ysw_r2 { color: var(--ysw-orange); }
+  .ysw_rank-num.ysw_r3 { color: var(--ysw-yellow); }
+  .ysw_rank-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: color .15s;
+  }
+  .ysw_rank-row:hover .ysw_rank-title { color: var(--ysw-primary); }
+  .ysw_rank-count {
+    flex: none;
+    color: var(--ysw-hot);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ysw_foot { margin-top: 16px; text-align: center; font-size: 13px; }
+  .ysw_foot a { color: var(--ysw-ink-soft); text-decoration: none; }
+  .ysw_foot a:hover { color: var(--ysw-primary); }
+</style>
+</head>
+<body>
+<div class="ysw_page">
+
+  <!-- 选项卡容器：复用 ysw_tabs 组件约定（data-ysw-tabs 标记） -->
+  <div class="ysw_tabs" data-ysw-tabs>
+    <div class="ysw_tab-bar">
+      <button class="ysw_tab-btn ysw_active" data-ysw-index="0">点击排行</button>
+      <button class="ysw_tab-btn" data-ysw-index="1">评论排行</button>
+    </div>
+    <!-- 点击排行面板（默认选中），内容由 js/ysw_rank.js 动态渲染 -->
+    <div class="ysw_tab-panel ysw_active">
+      <div class="ysw_rank-list" id="ysw_clickList"></div>
+    </div>
+    <!-- 评论排行面板 -->
+    <div class="ysw_tab-panel">
+      <div class="ysw_rank-list" id="ysw_commentList"></div>
+    </div>
+  </div>
+
+  <p class="ysw_foot"><a href="index.html">← 返回首页 index.html</a></p>
+</div>
+
+<!-- 选项卡切换：复用 js/ysw_tabs.js 可复用组件 -->
+<script src="js/ysw_tabs.js"></script>
+<!-- 榜单渲染逻辑：外部引用 -->
+<script src="js/ysw_rank.js"></script>
+</body>
+</html>
