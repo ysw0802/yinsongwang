@@ -1,0 +1,44 @@
+# GitHub Pages 自动部署工作流
+# 作者：尹松旺  建立时间：2026-11-02  使用模型：GLM-5.3-Flash
+# 功能简介：每次 push 到 main 分支时，把 upload_site 文件夹作为站点
+#           根目录发布到 GitHub Pages，解决仓库根目录无 index.html
+#           导致的整站 404 问题。
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # 允许在 Actions 页面手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只保留一次最新部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+
+      # 关键：以 upload_site 文件夹作为网站根目录打包
+      - name: 上传站点文件（upload_site 作为根目录）
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: upload_site
+
+      - name: 部署上线
+        id: deployment
+        uses: actions/deploy-pages@v4
