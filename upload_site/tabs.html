@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab 选项卡 · 新闻分类</title>
+<!--
+  文件名称：tabs.html
+  作    者：尹松旺
+  建立时间：2026-11-02
+  使用模型：GLM-5.3-Flash
+  功能简介：Tab 选项卡示例页。四个新闻分类选项卡（国内/省内/国际/最热），
+            国内新闻为默认选中项；JS 逻辑外部引用 js/ysw_tabs.js，
+            选项卡组件可复用（ysw_initTabs 可初始化任意多个选项卡组）。
+-->
+<style>
+  :root {
+    --ysw-primary: #2f6bff;
+    --ysw-ink: #1f2733;
+    --ysw-ink-soft: #5b6472;
+    --ysw-line: #e4e8f0;
+    --ysw-bg: #f4f6fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--ysw-bg);
+    color: var(--ysw-ink);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .ysw_page { width: 100%; max-width: 720px; }
+  .ysw_page-title { font-size: 22px; margin-bottom: 4px; }
+  .ysw_page-sub { color: var(--ysw-ink-soft); font-size: 13px; margin-bottom: 18px; }
+
+  /* 选项卡组件样式（可复用：任何 .ysw_tabs 容器均适用） */
+  .ysw_tabs {
+    background: #fff;
+    border: 1px solid var(--ysw-line);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(20, 28, 48, .08);
+  }
+  .ysw_tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--ysw-line);
+    background: #fafbfd;
+  }
+  .ysw_tab-btn {
+    flex: 1;
+    padding: 13px 8px;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    color: var(--ysw-ink-soft);
+    cursor: pointer;
+    position: relative;
+    transition: color .2s, background .2s;
+  }
+  .ysw_tab-btn:hover { color: var(--ysw-primary); }
+  .ysw_tab-btn.ysw_active {
+    color: var(--ysw-primary);
+    font-weight: 700;
+    background: #fff;
+  }
+  .ysw_tab-btn.ysw_active::after {
+    content: "";
+    position: absolute;
+    left: 20%; right: 20%; bottom: -1px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--ysw-primary);
+  }
+  .ysw_tab-panel { display: none; padding: 6px 22px 18px; }
+  .ysw_tab-panel.ysw_active { display: block; animation: ysw_fade .28s ease; }
+  @keyframes ysw_fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .ysw_news-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 2px;
+    border-bottom: 1px dashed var(--ysw-line);
+    font-size: 14px;
+  }
+  .ysw_news-item:last-child { border-bottom: none; }
+  .ysw_news-time { flex: none; color: var(--ysw-ink-soft); font-size: 12px; }
+  .ysw_news-item:hover .ysw_news-title { color: var(--ysw-primary); cursor: pointer; }
+
+  .ysw_back { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--ysw-ink-soft); text-decoration: none; }
+  .ysw_back:hover { color: var(--ysw-primary); }
+</style>
+</head>
+<body>
+<div class="ysw_page">
+  <h1 class="ysw_page-title">新闻 Tab 选项卡</h1>
+  <p class="ysw_page-sub">默认选中"国内新闻" · JS 外部引用 · 组件可复用</p>
+
+  <!-- 选项卡组 1：data-ysw-tabs 标记一个可复用的选项卡容器 -->
+  <div class="ysw_tabs" data-ysw-tabs>
+    <div class="ysw_tab-bar">
+      <button class="ysw_tab-btn ysw_active" data-ysw-index="0">国内新闻</button>
+      <button class="ysw_tab-btn" data-ysw-index="1">省内新闻</button>
+      <button class="ysw_tab-btn" data-ysw-index="2">国际新闻</button>
+      <button class="ysw_tab-btn" data-ysw-index="3">最热新闻</button>
+    </div>
+    <div class="ysw_tab-panel ysw_active">
+      <div class="ysw_news-item"><span class="ysw_news-title">全国秋粮收获过八成，丰收已成定局</span><span class="ysw_news-time">09:30</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">新一轮减税降费政策落地，惠及小微企业</span><span class="ysw_news-time">10:15</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">全国铁路迎来客流高峰，加开旅客列车</span><span class="ysw_news-time">11:02</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">科研团队在量子通信领域取得新突破</span><span class="ysw_news-time">13:47</span></div>
+    </div>
+    <div class="ysw_tab-panel">
+      <div class="ysw_news-item"><span class="ysw_news-title">我省发布新一轮人才引进优惠政策</span><span class="ysw_news-time">08:20</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">全省高速公路网再扩容，两条新线通车</span><span class="ysw_news-time">09:55</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">省内高校科技成果转化率创历史新高</span><span class="ysw_news-time">14:10</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">我省启动冬季文化旅游消费季活动</span><span class="ysw_news-time">16:33</span></div>
+    </div>
+    <div class="ysw_tab-panel">
+      <div class="ysw_news-item"><span class="ysw_news-title">多国代表呼吁加强全球气候合作</span><span class="ysw_news-time">07:45</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">国际航运价格持续回落，供应链趋稳</span><span class="ysw_news-time">10:38</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">全球新能源车销量再创新纪录</span><span class="ysw_news-time">12:21</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">联合国大会通过数字经济合作决议</span><span class="ysw_news-time">15:06</span></div>
+    </div>
+    <div class="ysw_tab-panel">
+      <div class="ysw_news-item"><span class="ysw_news-title">热搜第一：全国多地迎来初雪</span><span class="ysw_news-time">热搜</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">爆款国产电影票房突破 30 亿元</span><span class="ysw_news-time">热搜</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">电竞国家队夺得国际赛事冠军</span><span class="ysw_news-time">热搜</span></div>
+      <div class="ysw_news-item"><span class="ysw_news-title">科学家首次拍到罕见天象画面</span><span class="ysw_news-time">热搜</span></div>
+    </div>
+  </div>
+
+  <a class="ysw_back" href="index.html">← 返回首页 index.html</a>
+</div>
+
+<!-- 外部引用 JS：选项卡逻辑与页面结构分离，组件可复用 -->
+<script src="js/ysw_tabs.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学生成绩分析面板 · 等级一（完成版）</title>
+<style>
+  /* 样式与 target.html 保持一致，方便一比一对照还原 */
+  :root{
+    --bg-1:#1a1c2c; --bg-2:#243b55;
+    --card:#ffffff; --card-soft:rgba(255,255,255,.92);
+    --ink:#1f2733; --ink-soft:#5b6472; --line:#e7eaf0;
+    --primary:#5b7cfa; --primary-d:#3f5fd9;
+    --accent:#21d4b4; --warn:#ff7a59; --gold:#f5b945; --rose:#ff5d8f;
+    --radius:14px; --shadow:0 10px 30px rgba(20,28,48,.18);
+    --shadow-sm:0 4px 14px rgba(20,28,48,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(135deg,var(--bg-1),var(--bg-2));min-height:100vh;color:var(--ink);line-height:1.6;padding:24px}
+  .wrap{max-width:1180px;margin:0 auto}
+  header.head{background:var(--card-soft);border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .head h1{font-size:22px;display:flex;align-items:center;gap:10px}
+  .head h1 .logo{width:38px;height:38px;border-radius:11px;flex:none;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:700}
+  .head .sub{color:var(--ink-soft);font-size:13px}
+  .tag-level{font-size:12px;font-weight:700;color:#fff;background:var(--primary);padding:4px 10px;border-radius:20px}
+  section.block{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow-sm);margin-bottom:18px}
+  .block-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px;color:var(--ink)}
+  .block-title::before{content:"";width:4px;height:16px;border-radius:3px;background:var(--primary)}
+  .block-title .hint{font-weight:400;color:var(--ink-soft);font-size:12px}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat-card{background:linear-gradient(135deg,#f6f8ff,#fff);border:1px solid var(--line);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+  .stat-card .stat-value{font-size:30px;font-weight:800;color:var(--primary);line-height:1.2}
+  .stat-card .stat-label{font-size:13px;color:var(--ink-soft);margin-top:4px}
+  .stat-card .stat-unit{font-size:14px;color:var(--ink-soft);font-weight:600;margin-left:3px}
+  .stat-card.accent .stat-value{color:var(--accent)}
+  .stat-card.warn .stat-value{color:var(--warn)}
+  .stat-card.gold .stat-value{color:var(--gold)}
+  .controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+  .search-box{position:relative;flex:1;min-width:220px}
+  .search-box input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:10px;font-size:14px;outline:none;transition:border-color .2s}
+  .search-box input:focus{border-color:var(--primary)}
+  .search-box .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft)}
+  .btn-group{display:flex;gap:6px;background:#eef1f7;padding:4px;border-radius:10px}
+  .btn-group button{border:none;background:transparent;padding:8px 14px;border-radius:7px;font-size:13px;color:var(--ink-soft);cursor:pointer;transition:all .18s}
+  .btn-group button.active{background:#fff;color:var(--primary);font-weight:700;box-shadow:var(--shadow-sm)}
+  .rank-grid{display:grid;grid-template-columns:1fr;gap:14px}
+  .rank-card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+  .rank-card h4{font-size:13px;color:var(--ink-soft);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .rank-card h4 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+  .rank-card.fail h4 .dot{background:var(--warn)}
+  .rank-list{display:flex;flex-direction:column;gap:8px}
+  .rank-row{display:flex;align-items:center;justify-content:space-between;font-size:13px}
+  .rank-row .rk{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:12px}
+  .rank-row .rk{background:#fde9dd;color:#c0602a}
+  .rank-row .nm{flex:1;margin:0 8px;font-weight:600}
+  .rank-row .vl{font-weight:700;color:var(--warn)}
+  .empty{color:var(--ink-soft);font-size:13px;font-style:italic;text-align:center;padding:10px 0}
+  .student-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .student-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;transition:transform .18s,box-shadow .18s;cursor:pointer}
+  .student-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .student-card .hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;font-size:15px}
+  .avatar.boy{background:linear-gradient(135deg,#5b7cfa,#7a5bfa)}
+  .avatar.girl{background:linear-gradient(135deg,#ff5d8f,#ff8fb1)}
+  .student-card .name{font-weight:700;font-size:15px}
+  .student-card .meta{font-size:12px;color:var(--ink-soft)}
+  .student-card .rank-badge{margin-left:auto;font-size:12px;font-weight:700;color:#fff;background:var(--primary);padding:3px 9px;border-radius:20px}
+  .student-card .rank-badge.gold{background:var(--gold)}
+  .score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+  .score-item{text-align:center;background:#f6f8ff;border-radius:8px;padding:6px 2px}
+  .score-item .sbj{font-size:11px;color:var(--ink-soft)}
+  .score-item .val{font-size:14px;font-weight:700}
+  .score-item .val.fail{color:var(--warn)}
+  .score-item .val.full{color:var(--accent)}
+  .student-card .ft{display:flex;align-items:center;justify-content:space-between;border-top:1px dashed var(--line);padding-top:8px;font-size:13px}
+  .student-card .ft .total{font-weight:800;color:var(--primary)}
+  .student-card .ft .avg{color:var(--ink-soft)}
+  footer.foot{text-align:center;color:rgba(255,255,255,.7);font-size:12px;padding:14px 0}
+  footer.foot a{color:rgba(255,255,255,.85);text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.5)}
+  footer.foot a:hover{color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <h1><span class="logo">分</span>学生成绩分析面板</h1>
+    <div>
+      <span class="tag-level">等级一 · 基础</span>
+      <div class="sub">DOM 查找 × 数组方法 × 函数 综合实战</div>
+    </div>
+  </header>
+
+  <!-- 区域1：统计卡片 -->
+  <section class="block">
+    <div class="block-title">班级概览 <span class="hint">getElementById / reduce / filter</span></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="statCount">0</div><div class="stat-label">班级人数（人）</div></div>
+      <div class="stat-card accent"><div class="stat-value" id="statTotalScore">0</div><div class="stat-label">班级总分</div></div>
+      <div class="stat-card gold"><div class="stat-value" id="statAvgScore">0</div><div class="stat-label">班级平均分</div></div>
+      <div class="stat-card warn"><div class="stat-value" id="statPassRate">0<span class="stat-unit">%</span></div><div class="stat-label">及格率（无不及格科目）</div></div>
+    </div>
+  </section>
+
+  <!-- 区域2：控制区（搜索 + 排序）-->
+  <section class="block">
+    <div class="block-title">数据操作 <span class="hint">filter / sort / querySelectorAll / classList / 事件委托</span></div>
+    <div class="controls">
+      <div class="search-box">
+        <span class="ico">🔍</span>
+        <input type="text" id="searchInput" placeholder="按姓名或学号搜索…">
+      </div>
+      <div class="btn-group" id="sortBtns">
+        <button class="active" data-sort="total">按总分↓</button>
+        <button data-sort="id">按学号↑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 区域3：不及格预警（榜单区简化）-->
+  <section class="block">
+    <div class="block-title">不及格预警 <span class="hint">filter / sort / forEach</span></div>
+    <div class="rank-grid">
+      <div class="rank-card fail">
+        <h4><span class="dot"></span>不及格学生名单</h4>
+        <div class="rank-list" id="failWarningList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 区域4：学生卡片列表 -->
+  <section class="block">
+    <div class="block-title">学生成绩卡片 <span class="hint">forEach / createElement / classList</span></div>
+    <div class="student-grid" id="studentList"></div>
+  </section>
+
+  <footer class="foot">高级网页设计课堂实践任务 · 等级一（基础）· 完成版 · <a href="index.html">返回首页 index.html</a></footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ============================================================
+ * 等级一（基础）· 完成版
+ * 已补全 5 个必做函数，运行效果与 target.html 对应区域一比一还原
+ * 数据来源：window.STUDENTS / window.SUBJECTS（见 data.js）
+ * 说明：模板既有的 id / class 命名保持原样以保证还原度，
+ *       新增的 JS 局部变量均以 ysw_ 前缀命名
+ * ============================================================ */
+(function () {
+  "use strict";
+  const STUDENTS = window.STUDENTS;
+  const SUBJECTS = window.SUBJECTS;
+
+  const PASS_LINE = 60;          // 及格线
+  const EXCELLENT_AVG = 85;      // 优秀线（等级一暂不使用）
+
+  /* ---------- 工具函数 ---------- */
+  // 计算单科分数的样式类：不及格返回 "fail"，满分返回 "full"，否则 ""
+  function scoreClass(v) {
+    if (v < PASS_LINE) return "fail";   // 不及格 → 橙色警示
+    if (v >= 100) return "full";        // 满分 → 青色高亮
+    return "";
+  }
+
+  // 计算一个学生的总分：reduce 把五科分数累加
+  function getTotal(s) {
+    return SUBJECTS.reduce(function (ysw_sum, ysw_sub) {
+      return ysw_sum + s[ysw_sub.key];
+    }, 0);
+  }
+
+  // 计算一个学生的平均分：总分 / 科目数，保留一位小数
+  function getAvg(s) {
+    return Math.round(getTotal(s) / SUBJECTS.length * 10) / 10;
+  }
+
+  // 取一个学生不及格的科目数组：filter 筛选分数 < 及格线
+  function getFails(s) {
+    return SUBJECTS.filter(function (ysw_sub) {
+      return s[ysw_sub.key] < PASS_LINE;
+    });
+  }
+
+  // 姓名首字（头像用）
+  function firstName(s) {
+    return s.name.charAt(0);
+  }
+
+
+  /* ============ 5 个必做函数（已全部实现） ============ */
+
+  /* ① 渲染统计卡片 —— getElementById + reduce + filter */
+  function renderStats(list) {
+    var ysw_count = list.length;
+    // reduce 累加所有学生的五科总分
+    var ysw_totalScore = list.reduce(function (ysw_sum, ysw_s) {
+      return ysw_sum + getTotal(ysw_s);
+    }, 0);
+    // 平均分 = 总分 /（人数 × 科目数），保留 1 位小数
+    var ysw_avgScore = ysw_count > 0
+      ? Math.round(ysw_totalScore / (ysw_count * SUBJECTS.length) * 10) / 10
+      : 0;
+    // filter 求没有不及格科目的学生数 → 及格率取整
+    var ysw_passCount = list.filter(function (ysw_s) {
+      return getFails(ysw_s).length === 0;
+    }).length;
+    var ysw_passRate = ysw_count > 0 ? Math.round(ysw_passCount / ysw_count * 100) : 0;
+    // 写入 4 张统计卡片
+    document.getElementById("statCount").textContent = ysw_count;
+    document.getElementById("statTotalScore").textContent = ysw_totalScore;
+    document.getElementById("statAvgScore").textContent = ysw_avgScore;
+    // 及格率卡片内部已有 <span class="stat-unit">%</span>，只改第一个文本节点
+    document.getElementById("statPassRate").firstChild.textContent = ysw_passRate;
+  }
+
+
+  /* ② 渲染学生卡片列表 —— forEach + createElement + classList */
+  function renderStudentCards(list) {
+    var ysw_box = document.getElementById("studentList");
+    ysw_box.innerHTML = "";   // 清空后重建
+    list.forEach(function (ysw_s, ysw_i) {
+      // 卡片容器
+      var ysw_card = document.createElement("div");
+      ysw_card.className = "student-card";
+      ysw_card.setAttribute("data-id", ysw_s.id);
+
+      // 头部：头像 + 姓名/学号 + 排名徽章
+      var ysw_hd = document.createElement("div");
+      ysw_hd.className = "hd";
+      var ysw_avatar = document.createElement("div");
+      ysw_avatar.className = "avatar " + (ysw_s.gender === "男" ? "boy" : "girl");
+      ysw_avatar.textContent = firstName(ysw_s);
+      var ysw_info = document.createElement("div");
+      var ysw_name = document.createElement("div");
+      ysw_name.className = "name";
+      ysw_name.textContent = ysw_s.name;
+      var ysw_meta = document.createElement("div");
+      ysw_meta.className = "meta";
+      ysw_meta.textContent = ysw_s.id + " · " + ysw_s.gender;
+      ysw_info.appendChild(ysw_name);
+      ysw_info.appendChild(ysw_meta);
+      var ysw_badge = document.createElement("span");
+      ysw_badge.className = "rank-badge" + (ysw_i === 0 ? " gold" : "");  // 第 1 名金色徽章
+      ysw_badge.textContent = "第" + (ysw_i + 1) + "名";
+      ysw_hd.appendChild(ysw_avatar);
+      ysw_hd.appendChild(ysw_info);
+      ysw_hd.appendChild(ysw_badge);
+
+      // 五科分数网格
+      var ysw_grid = document.createElement("div");
+      ysw_grid.className = "score-grid";
+      SUBJECTS.forEach(function (ysw_sub) {
+        var ysw_item = document.createElement("div");
+        ysw_item.className = "score-item";
+        var ysw_sbj = document.createElement("div");
+        ysw_sbj.className = "sbj";
+        ysw_sbj.textContent = ysw_sub.abbr;
+        var ysw_val = document.createElement("div");
+        var ysw_cls = scoreClass(ysw_s[ysw_sub.key]);
+        ysw_val.className = "val" + (ysw_cls ? " " + ysw_cls : "");
+        ysw_val.textContent = ysw_s[ysw_sub.key];
+        ysw_item.appendChild(ysw_sbj);
+        ysw_item.appendChild(ysw_val);
+        ysw_grid.appendChild(ysw_item);
+      });
+
+      // 底部：总分 + 均分
+      var ysw_ft = document.createElement("div");
+      ysw_ft.className = "ft";
+      var ysw_total = document.createElement("span");
+      ysw_total.className = "total";
+      ysw_total.textContent = "总分 " + getTotal(ysw_s);
+      var ysw_avg = document.createElement("span");
+      ysw_avg.className = "avg";
+      ysw_avg.textContent = "均分 " + getAvg(ysw_s);
+      ysw_ft.appendChild(ysw_total);
+      ysw_ft.appendChild(ysw_avg);
+
+      ysw_card.appendChild(ysw_hd);
+      ysw_card.appendChild(ysw_grid);
+      ysw_card.appendChild(ysw_ft);
+      ysw_box.appendChild(ysw_card);
+    });
+  }
+
+
+  /* ③ 渲染不及格预警 —— filter + sort + forEach */
+  function renderFailWarning(list) {
+    var ysw_box = document.getElementById("failWarningList");
+    ysw_box.innerHTML = "";
+    // filter 筛出有不及格科目的学生（filter 返回新数组，sort 不会影响原 list）
+    var ysw_fails = list.filter(function (ysw_s) {
+      return getFails(ysw_s).length > 0;
+    }).sort(function (ysw_a, ysw_b) {
+      var ysw_d = getFails(ysw_b).length - getFails(ysw_a).length;  // 不及格数降序
+      return ysw_d !== 0 ? ysw_d : getTotal(ysw_b) - getTotal(ysw_a); // 同数按总分降序
+    });
+    if (ysw_fails.length === 0) {
+      ysw_box.innerHTML = '<div class="empty">全员通过，无预警</div>';
+      return;
+    }
+    ysw_fails.forEach(function (ysw_s) {
+      var ysw_row = document.createElement("div");
+      ysw_row.className = "rank-row";
+      var ysw_rk = document.createElement("span");
+      ysw_rk.className = "rk";
+      ysw_rk.textContent = getFails(ysw_s).length;
+      var ysw_nm = document.createElement("span");
+      ysw_nm.className = "nm";
+      ysw_nm.textContent = ysw_s.name + "（" + getFails(ysw_s).map(function (ysw_sub) {
+        return ysw_sub.name;
+      }).join("、") + "）";
+      var ysw_vl = document.createElement("span");
+      ysw_vl.className = "vl";
+      ysw_vl.textContent = getTotal(ysw_s) + "分";
+      ysw_row.appendChild(ysw_rk);
+      ysw_row.appendChild(ysw_nm);
+      ysw_row.appendChild(ysw_vl);
+      ysw_box.appendChild(ysw_row);
+    });
+  }
+
+
+  /* ④ 搜索 —— filter + input 事件（忽略大小写、去空格） */
+  function search(keyword) {
+    var ysw_kw = keyword.trim().toLowerCase();
+    if (!ysw_kw) return STUDENTS.slice();   // 无关键字返回全部（副本）
+    return STUDENTS.filter(function (ysw_s) {
+      return ysw_s.name.toLowerCase().indexOf(ysw_kw) > -1 ||
+             ysw_s.id.toLowerCase().indexOf(ysw_kw) > -1;
+    });
+  }
+
+
+  /* ⑤ 排序 —— sort + slice（返回新数组，不修改原数组） */
+  var currentSort = "total";
+  function sortList(list, by) {
+    return list.slice().sort(function (ysw_a, ysw_b) {
+      if (by === "id") {
+        return ysw_a.id > ysw_b.id ? 1 : (ysw_a.id < ysw_b.id ? -1 : 0);  // 学号升序
+      }
+      return getTotal(ysw_b) - getTotal(ysw_a);  // 总分降序
+    });
+  }
+
+
+  /* ---------- 主刷新流程：依次调用上述函数 ---------- */
+  function refresh() {
+    var kw = document.getElementById("searchInput").value;
+    var data = sortList(search(kw), currentSort);
+    renderStats(data);
+    renderStudentCards(data);
+    renderFailWarning(data);
+  }
+
+
+  /* ---------- 事件绑定（模板已给出） ---------- */
+  var timer = null;
+  document.getElementById("searchInput").addEventListener("input", function () {
+    clearTimeout(timer);
+    timer = setTimeout(refresh, 200);
+  });
+
+  // 排序按钮：事件委托 + querySelectorAll 切换高亮
+  document.getElementById("sortBtns").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    currentSort = btn.getAttribute("data-sort");
+    this.querySelectorAll("button").forEach(function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    refresh();
+  });
+
+  /* ---------- 初始化 ---------- */
+  refresh();
+})();
+</script>
+</body>
+</html>
