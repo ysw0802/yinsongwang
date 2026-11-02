@@ -1,3 +1,3 @@
-## 2026-11-02 15:27:22 (Asia/Shanghai)
+## 2026-11-02 15:48:06 (Asia/Shanghai)
 - 模型: GLM-5.3-Flash
-- 提示词: 已切换 Pages Source 为 GitHub Actions，触发部署
+- 提示词: 首页课堂目录区块添加随堂测试入口（Tab 选项卡 / 新闻排行榜 / 成绩分析面板）
