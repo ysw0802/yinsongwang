@@ -196,7 +196,7 @@
       <span class="wy-no">4</span>
       <h2>六种效果随心换<small>effect 参数 + 进阶：按钮实时切换</small></h2>
     </div>
-    <p class="wy-txt">改一个 <code>effect</code> 参数，轮播立刻换一种"性格"：slide / fade / cube / coverflow / flip / cards。上面的 6 个按钮已经绑好了点击事件（读取 <code>btn.dataset.fx</code>），JS 还需要你补两段。</p>
+    <p class="wy-txt">改一个 <code>effect</code> 参数，轮播立刻换一种"性格"：slide / fade / cube / coverflow / flip / cards / <b>creative</b>（课堂未讲，第 7 种）。上面的 7 个按钮已经绑好了点击事件（读取 <code>btn.dataset.fx</code>），另外本次还给轮播加上了<b>键盘左右键控制</b>（点击轮播后按 ← / → 切换）。</p>
     <div class="wy-req">
       <h3>✍️ 任务 4 要求</h3>
       <p><b>基础分</b>：初始化 <code>#wySw4</code>，实现循环 + 自动播放（3.2 秒）+ 圆点分页器（#wyPag4），初始效果为 <code>'slide'</code>，动画时长 800 毫秒。</p>
@@ -210,6 +210,7 @@
       <button data-fx="coverflow">coverflow 画廊堆叠（沉浸）</button>
       <button data-fx="flip">flip 翻页（复古）</button>
       <button data-fx="cards">cards 卡片（俏皮）</button>
+      <button data-fx="creative">creative 影视墙（第 7 种·自定义）</button>
     </div>
     <div class="wy-demo">
       <span class="wy-demo-tag">🎛️ 演示四 · 效果实验台（点按钮切换 effect）</span>
@@ -221,6 +222,7 @@
             <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"><div class="wy-cap"><h3>C919 大飞机</h3><p>企业官网爱用 fade</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="wy-cap"><h3>奋斗者号</h3><p>游戏网站爱用 cube</p></div></div>
             <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="wy-cap"><h3>中国天眼 FAST</h3><p>相册页面爱用 coverflow</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/aidamodu.jpg" alt="爱达魔都号"><div class="wy-cap"><h3>爱达魔都号</h3><p>2024 年 1 月首航 · 首艘国产大型邮轮</p></div></div>
           </div>
           <div class="swiper-pagination" id="wyPag4"></div>
         </div>
@@ -275,8 +277,9 @@ var ysw_swiper3 = new Swiper('#wySw3', {
     }
 });
 
-  // ── 任务 4：初始化 #wySw4，循环 + 3.2 秒自动播放 + 圆点 + 初始 effect ──
+  // ── 任务 4：初始化 #wySw4，循环 + 3.2 秒自动播放 + 圆点 + 初始 effect + 键盘控制 ──
   // 作者：尹松旺 2026-11-05 GLM-5.3-Flash · ysw_swiper4：效果实验台轮播（slide 起步）
+  // 2026-11-09 追加：keyboard 键盘控制（超纲能力，点击轮播后按 ← / → 切换）
 var ysw_fx = 'slide';              // 当前轮播效果，切换按钮时更新
 var ysw_swiper4 = new Swiper('#wySw4', {
     loop: true,                    // 循环播放
@@ -289,6 +292,10 @@ var ysw_swiper4 = new Swiper('#wySw4', {
     pagination: {
         el: '#wyPag4',             // 圆点分页器
         clickable: true
+    },
+    keyboard: {                    // 超纲能力：键盘左右键控制
+        enabled: true,
+        onlyInViewport: true
     }
 });
 
@@ -309,13 +316,23 @@ document.querySelectorAll('.wy-fx button').forEach(function(btn){
 
       // TODO 3：用新 effect 重建实例（把其它配置原样保留）
       ysw_fx = btn.dataset.fx;         // 读取按钮上的 data-fx 效果名
-      ysw_swiper4 = new Swiper('#wySw4', {
+      var ysw_cfg4 = {
           loop: true,
           speed: 800,
           effect: ysw_fx,              // 使用新选中的效果
           autoplay: { delay: 3200, disableOnInteraction: false },
-          pagination: { el: '#wyPag4', clickable: true }
-      });
+          pagination: { el: '#wyPag4', clickable: true },
+          keyboard: { enabled: true, onlyInViewport: true }
+      };
+      // 若选择 creative（第 7 种·影视墙），追加 creativeEffect 自定义变换：
+      // prev：上一张左移 30%、缩到 0.7、向左倾斜 15°；next：下一张右移 60%、缩到 0.85、向右倾斜 10°
+      if (ysw_fx === 'creative') {
+          ysw_cfg4.creativeEffect = {
+              prev: { translate: ['-30%', 0, -200], scale: 0.7, rotate: -15, shadow: true },
+              next: { translate: ['60%', 0, -100], scale: 0.85, rotate: 10 }
+          };
+      }
+      ysw_swiper4 = new Swiper('#wySw4', ysw_cfg4);
     });
   });
 </script>

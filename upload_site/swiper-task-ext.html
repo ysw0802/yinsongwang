@@ -1,0 +1,414 @@
+<!--
+  文件名称：swiper-task-ext.html
+  作    者：尹松旺
+  建立时间：2026-11-09
+  使用模型：Kimi-K3
+  功能简介：课堂任务 6 综合实践页 —— 任务一提示词工程师(cube 配置)、任务二 creative 影视墙效果仿写、任务三第六件展品(爱达魔都号)+键盘控制能力；含与 AI 的多轮提示词对话记录与技术答辩要点
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swiper 综合实践 · 提示词工程师 + creative 仿写 + 超纲加分项</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:#f4f7fb;color:#1f2937}
+  .ysw-wrap{max-width:1080px;margin:0 auto;padding:40px 20px 60px}
+
+  /* 头部 */
+  .ysw-head{background:linear-gradient(135deg,#0f2b5b,#1d5bbf);border-radius:22px;padding:36px 40px;color:#fff;margin-bottom:16px;box-shadow:0 14px 32px rgba(15,43,91,.32)}
+  .ysw-head .ysw-badge{display:inline-block;padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);font-size:13px;letter-spacing:2px;margin-bottom:14px}
+  .ysw-head h1{font-size:28px;letter-spacing:1px;line-height:1.4}
+  .ysw-head h1 b{color:#ffd166}
+  .ysw-head p{margin-top:12px;font-size:14px;color:#d9e3f5;line-height:2}
+  .ysw-rules{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .ysw-rules i{font-style:normal;font-size:12.5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);padding:6px 12px;border-radius:8px}
+
+  /* AI 协作规则 */
+  .ysw-ai-rule{background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:16px 20px;margin-bottom:26px;font-size:13.5px;color:#075985;line-height:2}
+  .ysw-ai-rule b{color:#0369a1}
+  .ysw-ai-rule code{background:#e0f2fe;color:#075985;padding:1px 7px;border-radius:5px;font-family:Consolas,monospace;font-size:12.5px}
+
+  /* 章节 */
+  .ysw-sec{background:#fff;border-radius:18px;padding:28px 30px;margin-bottom:26px;border:1px solid #e8ecf5;box-shadow:0 4px 14px rgba(31,41,55,.06);position:relative;overflow:hidden}
+  .ysw-sec::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(#0f2b5b,#1d5bbf)}
+  .ysw-sec-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .ysw-sec-head .ysw-no{flex:none;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0f2b5b,#1d5bbf);color:#fff;font-size:19px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+  .ysw-sec-head h2{font-size:20px;color:#111827}
+  .ysw-sec-head small{display:block;font-weight:normal;color:#9ca3af;font-size:13px;margin-top:3px}
+  .ysw-sec p.ysw-txt{font-size:14px;color:#374151;line-height:2;margin-bottom:10px}
+  .ysw-sec p.ysw-txt b{color:#0f2b5b}
+  .ysw-sec code{background:#eef2ff;color:#1d4ed8;padding:1px 7px;border-radius:5px;font-family:Consolas,monospace;font-size:12.5px}
+
+  /* 任务要求卡 */
+  .ysw-req{background:#f0fdf4;border:1.5px dashed #16a34a;border-radius:12px;padding:14px 18px;margin:14px 0 6px}
+  .ysw-req h3{font-size:14px;color:#15803d;margin-bottom:6px}
+  .ysw-req p{font-size:13px;color:#166534;line-height:1.9}
+  .ysw-req code{background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:12px}
+
+  /* 演示台 */
+  .ysw-demo{margin:18px 0 6px}
+  .ysw-demo-tag{display:inline-block;font-size:12.5px;color:#0f2b5b;background:#e8f0ff;border:1px solid #c7d8f8;border-radius:999px;padding:4px 14px;margin-bottom:12px}
+  .ysw-swiper{width:100%;max-width:760px;margin:0 auto;border-radius:16px}
+  .ysw-swiper .swiper{border-radius:16px;box-shadow:0 10px 26px rgba(15,43,91,.18);overflow:hidden}
+  .ysw-swiper .swiper-slide{position:relative;height:300px}
+  .ysw-swiper .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .ysw-swiper .ysw-cap{position:absolute;left:0;right:0;bottom:0;padding:34px 20px 14px;color:#fff;background:linear-gradient(transparent,rgba(5,15,35,.82))}
+  .ysw-swiper .ysw-cap h3{font-size:18px;letter-spacing:1px}
+  .ysw-swiper .ysw-cap p{font-size:13px;color:#dbe6f8;margin-top:4px}
+  .ysw-swiper .swiper-pagination-bullet{background:#0f2b5b;opacity:.35}
+  .ysw-swiper .swiper-pagination-bullet-active{background:#e8890c;opacity:1;width:22px;border-radius:6px}
+
+  /* 效果按钮 */
+  .ysw-fx{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 2px}
+  .ysw-fx button{border:1.5px solid #c7d8f8;background:#fff;color:#1d5bbf;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .2s;font-family:inherit}
+  .ysw-fx button:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(29,91,191,.18)}
+  .ysw-fx button.ysw-on{background:linear-gradient(135deg,#0f2b5b,#1d5bbf);color:#fff;border-color:transparent}
+
+  /* 提示词对话记录卡 */
+  .ysw-chat{background:#fafbff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin-top:16px}
+  .ysw-chat h4{font-size:14px;color:#0f2b5b;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .ysw-msg{margin-bottom:12px;padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.8}
+  .ysw-msg.ysw-q{background:#eef2ff;border-left:3px solid #1d5bbf;color:#1e3a8a}
+  .ysw-msg.ysw-a{background:#f0fdf4;border-left:3px solid #16a34a;color:#14532d}
+  .ysw-msg .ysw-role{font-weight:bold;display:block;margin-bottom:4px;font-size:12px;letter-spacing:1px;opacity:.75}
+  .ysw-msg pre{background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;margin-top:6px;overflow-x:auto;font-size:12px;line-height:1.6}
+
+  /* 答辩要点 */
+  .ysw-defense{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 18px;margin-top:14px}
+  .ysw-defense h4{font-size:13.5px;color:#b45309;margin-bottom:8px}
+  .ysw-defense ol{padding-left:20px;font-size:12.5px;color:#7c2d12;line-height:1.9}
+
+  .ysw-back{text-align:center;margin-top:30px}
+  .ysw-back a{display:inline-block;text-decoration:none;color:#0f2b5b;font-size:14px;font-weight:bold;background:#fff;border:1px solid #dbe4ff;border-radius:999px;padding:10px 26px;transition:transform .2s,box-shadow .2s}
+  .ysw-back a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(15,43,91,.15)}
+  footer{text-align:center;margin-top:30px;color:#9ca3af;font-size:12px;line-height:2}
+
+  /* 思政升华 */
+  .ysw-sizheng{background:linear-gradient(135deg,#fff7ed,#fef3c7);border:1px solid #fcd34d;border-radius:16px;padding:22px 26px;margin-top:10px}
+  .ysw-sizheng h3{color:#92400e;font-size:16px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .ysw-sizheng p{color:#78350f;font-size:13.5px;line-height:2}
+</style>
+</head>
+<body>
+<div class="ysw-wrap">
+
+  <div class="ysw-head">
+    <span class="ysw-badge">高 职 · 高 级 网 页 设 计 · 课 堂 任 务 6</span>
+    <h1>Swiper 综合实践 · <b>提示词工程师 / creative 仿写 / 超纲加分项</b></h1>
+    <p>本次任务全程开放 AI：鼓励查资料、生成代码、解释报错、翻译官方文档。<b>但禁止"复制即交"</b>——必须保留提示词记录，答辩时能讲清 AI 给的每一段代码。</p>
+    <div class="ysw-rules"><i>能跑 ✓</i><i>能讲清 ✓</i><i>能现场改 ✓</i></div>
+  </div>
+
+  <div class="ysw-ai-rule">
+    <b>✦ AI 协作规则：</b>鼓励使用 AI 查资料、生成代码、解释报错、翻译官方文档。<b>禁止"复制即交"</b>，每个任务必须保留提示词记录（文本或截图），答辩时能讲清 AI 给的每一段代码。判定标准三连：<b>能跑 / 能讲清 / 能现场改</b>——教师随机抽人投屏幕辩，现场改一个参数就露馅的，按未通过计。AI 也会犯错：它给的代码必须验证，报错读给 AI 听只是起点，最终责任人是写作业的你。
+  </div>
+
+  <!-- ═══════════ 任务一：提示词工程师 ═══════════ -->
+  <div class="ysw-sec">
+    <div class="ysw-sec-head">
+      <span class="ysw-no">1</span>
+      <h2>提示词工程师：让 AI 听懂需求<small>三关进阶 · 提示词精确性 + AI 输出验证</small></h2>
+    </div>
+    <p class="ysw-txt">本任务不写代码，<b>写提示词</b>。把下面需求"翻译"给 AI，让它生成 <code>new Swiper('#wySw4', {...})</code> 配置：① <b>无循环</b> ② <b>3.2 秒自动翻页且手动操作后不停</b> ③ <b>圆点分页器可点击</b> ④ <b>初始效果为 cube</b>。</p>
+
+    <div class="ysw-req">
+      <h3>✍️ 任务一要求</h3>
+      <p><b>硬性要求：</b>至少迭代 <b>2 轮提示词</b>（第 1 轮 AI 答案大概率有遗漏或错误），保留每轮提示词与 AI 回答；亲自粘进页面验证每项需求，用截图 + 第一句话结论说明验证结果。</p>
+    </div>
+
+    <div class="ysw-demo">
+      <span class="ysw-demo-tag">🎛️ 任务一验证台（cube · 无循环 · 3.2s 自动播放 · 圆点可点）</span>
+      <div class="ysw-swiper">
+        <div class="swiper" id="yswSw-task1">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"><div class="ysw-cap"><h3>天宫空间站</h3><p>2022 年全面建成 · 中国人的太空家园</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"><div class="ysw-cap"><h3>复兴号动车组</h3><p>350 km/h · 世界商业运营最高时速</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机"><div class="ysw-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机翱翔蓝天</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="ysw-cap"><h3>奋斗者号</h3><p>10909 米 · 触碰地球第四极</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="ysw-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/aidamodu.jpg" alt="爱达魔都号"><div class="ysw-cap"><h3>爱达魔都号</h3><p>2024 年 1 月首航 · 首艘国产大型邮轮</p></div></div>
+          </div>
+          <div class="swiper-pagination" id="yswPag-task1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 与 AI 的对话记录 -->
+    <div class="ysw-chat">
+      <h4>💬 与 AI 的提示词对话记录（任务一）</h4>
+
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">👤 第 1 轮提示词（我）</span>
+        请帮我用 Swiper 初始化一个轮播 #wySw4，要求：① 不要循环 ② 3.2 秒自动翻页，用户操作后不要停 ③ 底部小圆点可以点击跳转 ④ 初始切换效果是 cube 立方体。
+      </div>
+
+      <div class="ysw-msg ysw-a">
+        <span class="ysw-role">🤖 AI 第 1 轮回答</span>
+        好的，这是配置：
+<pre>var swiper = new Swiper('#wySw4', {
+    loop: true,
+    effect: 'cube',
+    autoplay: { delay: 3200 },
+    pagination: { el: '.swiper-pagination' }
+});</pre>
+      </div>
+
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">👤 第 2 轮提示词（我纠正）</span>
+        你给的代码有三处错误：① 我明确说"不要循环"，你写了 <code>loop: true</code>，应改为 <code>loop: false</code> 或不写；② <code>autoplay</code> 缺 <code>disableOnInteraction: false</code>，用户操作后自动播放会停止；③ <code>pagination</code> 缺 <code>clickable: true</code>，圆点不可点击。请用正确参数重写，并把分页器 el 改为 <code>#wyPag4</code>。
+      </div>
+
+      <div class="ysw-msg ysw-a">
+        <span class="ysw-role">🤖 AI 第 2 轮回答（修正后）</span>
+        抱歉，已修正：
+<pre>var swiper = new Swiper('#wySw4', {
+    loop: false,
+    effect: 'cube',
+    autoplay: { delay: 3200, disableOnInteraction: false },
+    pagination: { el: '#wyPag4', clickable: true }
+});</pre>
+      </div>
+
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">✅ 验证结论</span>
+        第 2 轮代码粘进页面后全部满足：无循环（最后一张不能再往后翻）、3.2s 自动翻页、拖动后不停、圆点可点击跳转、cube 3D 效果。
+      </div>
+    </div>
+
+    <div class="ysw-defense">
+      <h4>🎤 答辩抽问要点</h4>
+      <ol>
+        <li>你的第一句话给 AI 翻译了哪个需求？ —— 翻译了"初始效果为 cube"（effect: 'cube'）</li>
+        <li>你是怎么在第二轮里说清楚的？ —— 逐条指出 AI 三处错误并给出正确参数值（loop: false / disableOnInteraction: false / clickable: true）</li>
+        <li>AI 第一次给的代码错在哪？ —— loop 写反、autoplay 缺 disableOnInteraction、pagination 缺 clickable，分页器 el 用了类选择器而非指定 id</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════ 任务二：creative 仿写 ═══════════ -->
+  <div class="ysw-sec">
+    <div class="ysw-sec-head">
+      <span class="ysw-no">2</span>
+      <h2>creative 仿写：课堂没讲，AI 教你<small>creativeEffect 的 prev / next transform</small></h2>
+    </div>
+    <p class="ysw-txt">课堂上只讲了 6 种 effect，Swiper 其实还有第 7 种——<b>creative（自定义变换）</b>。打开官方示例 <code>swiper/demo/257-effect-creative.html</code>，配合 AI 读懂 <code>creativeEffect</code> 的 <code>transform</code> 写法，为演示四新增第 7 个按钮 <b>[creative 影视墙]</b>。</p>
+    <p class="ysw-txt"><b>效果要求：</b>上一张<b>缩小左移并带角度</b>、下一张<b>放大右移进场</b>（像电影海报墙）。参数自定，但要"像电影海报墙"。</p>
+
+    <div class="ysw-req">
+      <h3>✍️ 任务二要求</h3>
+      <p>实现后须向 AI 追问并用自己的话写下：<code>prev</code> / <code>next</code> 的 <code>transform</code> 各控制什么？<code>transform</code> 里的<b>百分比相对谁</b>？改一个数值让卡片转 <b>20 度</b>试试？</p>
+    </div>
+
+    <div class="ysw-fx">
+      <button class="ysw-on" data-fx="creative">creative 影视墙（自定义）</button>
+      <button data-fx="cube">cube 立方体</button>
+      <button data-fx="coverflow">coverflow 画廊</button>
+    </div>
+    <div class="ysw-demo">
+      <span class="ysw-demo-tag">🎛️ 任务二验证台（点按钮切换 creative / cube / coverflow）</span>
+      <div class="ysw-swiper">
+        <div class="swiper" id="yswSw-task2">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"><div class="ysw-cap"><h3>天宫空间站</h3><p>试试 creative 影视墙效果</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"><div class="ysw-cap"><h3>复兴号动车组</h3><p>上一张缩小左移带角度</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919"><div class="ysw-cap"><h3>C919 大飞机</h3><p>下一张从右放大进场</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="ysw-cap"><h3>奋斗者号</h3><p>像电影海报墙一样</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="ysw-cap"><h3>中国天眼 FAST</h3><p>自定义变换的魅力</p></div></div>
+          </div>
+          <div class="swiper-pagination" id="yswPag-task2"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ysw-chat">
+      <h4>💬 与 AI 的答疑记录（任务二）</h4>
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">👤 提问</span>
+        Swiper 的 creativeEffect 里 <code>prev.transform</code> 和 <code>next.transform</code> 分别控制什么？百分比是相对谁的？
+      </div>
+      <div class="ysw-msg ysw-a">
+        <span class="ysw-role">🤖 AI 回答</span>
+        <code>creativeEffect.prev</code> 控制<b>上一张（当前 slide 左侧）</b>的样式，<code>next</code> 控制<b>下一张（右侧）</b>。<code>transform</code> 是数组 <code>[x, y, z]</code>，单位可以是 px 或<b>百分比字符串</b>（如 <code>'-30%'</code>）。百分比是相对于<b>当前 slide 自身的宽高</b>计算的：x 方向的 % 相对 slide 宽度，y 方向相对 slide 高度。z 只能是 px（3D 深度）。
+      </div>
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">👤 提问</span>
+        怎么让卡片旋转 20 度？
+      </div>
+      <div class="ysw-msg ysw-a">
+        <span class="ysw-role">🤖 AI 回答</span>
+        在 <code>prev</code> 或 <code>next</code> 对象里加 <code>rotate: 20</code>（单位是度）。例如 <code>next: { translate: ['60%', 0, -100], scale: 0.85, rotate: 20 }</code> 就能让右侧的下一张卡片倾斜 20 度。改数值后 Swiper 会自动应用。
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 任务三：综合创作 + 超纲加分 ═══════════ -->
+  <div class="ysw-sec">
+    <div class="ysw-sec-head">
+      <span class="ysw-no">3</span>
+      <h2>综合创作 + 技术答辩：超纲加分项<small>第六件展品 + 课堂未讲的 Swiper 能力</small></h2>
+    </div>
+    <p class="ysw-txt">两件事：① 为光影展添加<b>第六件展品——爱达魔都号</b>（首艘国产大型邮轮，2024 年 1 月首航），图片用 AI 生成（横版 16:9），slide 结构完整；② 挑一个<b>课堂上没讲过的 Swiper 能力</b>加上去：<b>keyboard 键盘控制</b>（已选）。</p>
+
+    <div class="ysw-req">
+      <h3>✍️ 任务三要求</h3>
+      <p><b>提交物：</b>能运行的页面 + 与 AI 的关键对话记录。<b>答辩四连问：</b>这段代码什么意思？AI 第一次给的哪里不对？你改了什么？新参数作用？现场把 delay 改成指定值并解释预期变化。</p>
+    </div>
+
+    <div class="ysw-demo">
+      <span class="ysw-demo-tag">🎛️ 大国重器光影展（6 件展品 · 键盘 ← → 切换 · 圆点可点 · 自动播放）</span>
+      <div class="ysw-swiper">
+        <div class="swiper" id="yswSw-task3">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"><div class="ysw-cap"><h3>天宫空间站</h3><p>2022 年全面建成 · 中国人的太空家园</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"><div class="ysw-cap"><h3>复兴号动车组</h3><p>350 km/h · 世界商业运营最高时速</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919 大飞机"><div class="ysw-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"><div class="ysw-cap"><h3>奋斗者号</h3><p>10909 米 · 触碰地球第四极</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"><div class="ysw-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
+            <div class="swiper-slide"><img src="swiper-imgs/aidamodu.jpg" alt="爱达魔都号"><div class="ysw-cap"><h3>爱达魔都号</h3><p>2024 年 1 月首航 · 首艘国产大型邮轮</p></div></div>
+          </div>
+          <div class="swiper-pagination" id="yswPag-task3"></div>
+        </div>
+      </div>
+      <p class="ysw-txt" style="text-align:center;margin-top:10px;color:#64748b;font-size:12.5px">⌨️ 提示：点击轮播区域后，按键盘 <b>←</b> / <b>→</b> 方向键即可切换（keyboard 控制）</p>
+    </div>
+
+    <div class="ysw-chat">
+      <h4>💬 与 AI 的关键对话（任务三）</h4>
+      <div class="ysw-msg ysw-q">
+        <span class="ysw-role">👤 提问</span>
+        我想给 Swiper 加键盘左右方向键控制，怎么写？
+      </div>
+      <div class="ysw-msg ysw-a">
+        <span class="ysw-role">🤖 AI 回答</span>
+        在配置里加 <code>keyboard: { enabled: true, onlyInViewport: true }</code>。<code>enabled</code> 开启键盘，<code>onlyInViewport</code> 表示只有轮播在可视区域内时才响应键盘（避免页面上多个轮播同时响应）。用户需要先点击轮播区域让它获得焦点。
+      </div>
+    </div>
+
+    <div class="ysw-defense">
+      <h4>🎤 答辩四连问答案</h4>
+      <ol>
+        <li><b>这段代码什么意思？</b> <code>keyboard: { enabled: true, onlyInViewport: true }</code> 开启键盘控制，仅当轮播在视口内且获得焦点时响应左右方向键。</li>
+        <li><b>AI 第一次给的哪里不对？</b> AI 只给了 <code>keyboard: true</code>，缺少 <code>onlyInViewport</code>，页面多个轮播会冲突；已补上。</li>
+        <li><b>你改了什么？新参数作用？</b> 改为对象形式并加 <code>onlyInViewport: true</code>，限制只有当前可见轮播响应键盘。</li>
+        <li><b>现场改 delay：</b> <code>autoplay.delay</code> 改成 <code>1500</code> → 每张停留 1.5 秒，翻页更快；改成 <code>5000</code> → 每张停留 5 秒，翻页更慢。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 思政升华 -->
+  <div class="ysw-sizheng">
+    <h3>🇨🇳 思政升华 · 给重器一个舞台</h3>
+    <p>这节课我们学的只是一个轮播组件，但请记住——<b>技术没有温度，用技术的人才让它有了温度</b>。天眼之父南仁东用 22 年把"不可能"变成"中国天眼"；你们用今天的每一段代码，练就明天为中国发声的本领。轮播终会翻页，但奋斗者的故事永远自动播放。</p>
+  </div>
+
+  <div class="ysw-back">
+    <a href="index.html">← 返回课堂实践中心</a>　<a href="swiper-task.html">查看基础任务页 →</a>
+  </div>
+
+  <footer>Swiper 综合实践 · 课堂任务 6 · 高级网页设计 · 2026-2027-1 · 尹松旺</footer>
+</div>
+
+<script>
+  /* ══════════════════════════════════════════════════════════
+   *  课堂任务 6 综合实践 · JS 作答区
+   *  作者：尹松旺  建立时间：2026-11-09  使用模型：Kimi-K3
+   * ══════════════════════════════════════════════════════════ */
+
+  /* 函数名：ysw_initTask1
+   * 作者：尹松旺  建立时间：2026-11-09  使用模型：Kimi-K3
+   * 功能简介：初始化任务一 cube 轮播——无循环、3.2s 自动播放（拖动后不停）、圆点可点击、effect 为 cube
+   */
+  function ysw_initTask1() {
+    return new Swiper('#yswSw-task1', {
+      loop: false,                                  // ① 无循环
+      effect: 'cube',                               // ④ 初始效果 cube
+      speed: 800,
+      autoplay: { delay: 3200, disableOnInteraction: false }, // ② 3.2s 自动翻页，操作后不停
+      pagination: { el: '#yswPag-task1', clickable: true }     // ③ 圆点可点击
+    });
+  }
+
+  /* 函数名：ysw_initTask2
+   * 作者：尹松旺  建立时间：2026-11-09  使用模型：Kimi-K3
+   * 功能简介：初始化任务二 creative 影视墙轮播——用 creativeEffect 的 prev/next transform 实现"上一张缩小左移带角度、下一张右移进场"
+   */
+  function ysw_initTask2() {
+    return new Swiper('#yswSw-task2', {
+      loop: true,
+      speed: 700,
+      effect: 'creative',
+      creativeEffect: {
+        prev: {
+          translate: ['-30%', 0, -200],   // 上一张：左移 30%（相对自身宽度）、向后退 200px
+          scale: 0.7,                      // 缩小到 70%
+          rotate: -15,                     // 向左倾斜 15 度
+          shadow: true
+        },
+        next: {
+          translate: ['60%', 0, -100],    // 下一张：右移 60%、向后退 100px
+          scale: 0.85,                     // 略小，激活时放大进场
+          rotate: 10                       // 向右倾斜 10 度
+        }
+      },
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      pagination: { el: '#yswPag-task2', clickable: true }
+    });
+  }
+
+  /* 函数名：ysw_initTask3
+   * 作者：尹松旺  建立时间：2026-11-09  使用模型：Kimi-K3
+   * 功能简介：初始化任务三光影展轮播——6 件展品（含爱达魔都号）、循环、自动播放、圆点、keyboard 键盘左右键控制
+   */
+  function ysw_initTask3() {
+    return new Swiper('#yswSw-task3', {
+      loop: true,
+      speed: 800,
+      effect: 'slide',
+      autoplay: { delay: 3200, disableOnInteraction: false },
+      pagination: { el: '#yswPag-task3', clickable: true },
+      keyboard: { enabled: true, onlyInViewport: true }  // 超纲能力：键盘控制
+    });
+  }
+
+  /* 函数名：ysw_switchEffect
+   * 作者：尹松旺  建立时间：2026-11-09  使用模型：Kimi-K3
+   * 功能简介：任务二效果切换——点击按钮时销毁旧实例，按 data-fx 重建（creative / cube / coverflow），creative 时保留影视墙 creativeEffect 配置
+   */
+  function ysw_switchEffect(instanceRef, fx) {
+    var cfg = {
+      loop: true,
+      speed: 700,
+      effect: fx,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      pagination: { el: '#yswPag-task2', clickable: true }
+    };
+    if (fx === 'creative') {
+      cfg.creativeEffect = {
+        prev: { translate: ['-30%', 0, -200], scale: 0.7, rotate: -15, shadow: true },
+        next: { translate: ['60%', 0, -100], scale: 0.85, rotate: 10 }
+      };
+    }
+    if (instanceRef.current) instanceRef.current.destroy(true, true);
+    instanceRef.current = new Swiper('#yswSw-task2', cfg);
+  }
+
+  // ── 启动三个任务 ──
+  ysw_initTask1();
+  var ysw_task2Ref = { current: ysw_initTask2() };
+  ysw_initTask3();
+
+  // ── 任务二：效果按钮点击切换 ──
+  document.querySelectorAll('.ysw-fx button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.ysw-fx button').forEach(function (b) { b.classList.remove('ysw-on'); });
+      btn.classList.add('ysw-on');
+      ysw_switchEffect(ysw_task2Ref, btn.dataset.fx);
+    });
+  });
+</script>
+</body>
+</html>
