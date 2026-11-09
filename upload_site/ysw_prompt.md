@@ -50,3 +50,11 @@
 ## 2026-11-09 13:14:00 (Asia/Shanghai)
 - 模型: Kimi-K3
 - 提示词: 好的，提交吧（提交到 GitHub）
+
+## 2026-11-09 13:27:26 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 提示词需要prompt.md的文件（要求把与AI的提示词对话记录单独输出为 prompt.md 文件）
+
+## 2026-11-09 13:29:59 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 好的，提交吧（提交 prompt.md 及 swiper-task-ext.html 链接更新到 GitHub）
