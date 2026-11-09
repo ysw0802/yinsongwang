@@ -196,7 +196,7 @@
       <span class="wy-no">4</span>
       <h2>六种效果随心换<small>effect 参数 + 进阶：按钮实时切换</small></h2>
     </div>
-    <p class="wy-txt">改一个 <code>effect</code> 参数，轮播立刻换一种"性格"：slide / fade / cube / coverflow / flip / cards / <b>creative</b>（课堂未讲，第 7 种）。上面的 7 个按钮已经绑好了点击事件（读取 <code>btn.dataset.fx</code>），另外本次还给轮播加上了<b>键盘左右键控制</b>（点击轮播后按 ← / → 切换）。</p>
+    <p class="wy-txt">改一个 <code>effect</code> 参数，轮播立刻换一种"性格"：slide / fade / cube / coverflow / flip / cards / <b>creative</b>（课堂未讲，第 7 种）。上面的 7 个按钮已经绑好了点击事件（读取 <code>btn.dataset.fx</code>）。另外本次给轮播加了两个<b>课堂未讲的超纲能力</b>：<b>① keyboard 键盘控制</b>（点击轮播后按 ← / → 切换）<b>② mousewheel 滚轮控制</b>（鼠标滚轮上下滚动也能翻页，到首尾自动释放不拦截页面滚动）。</p>
     <div class="wy-req">
       <h3>✍️ 任务 4 要求</h3>
       <p><b>基础分</b>：初始化 <code>#wySw4</code>，实现循环 + 自动播放（3.2 秒）+ 圆点分页器（#wyPag4），初始效果为 <code>'slide'</code>，动画时长 800 毫秒。</p>
@@ -230,7 +230,7 @@
     </div>
   </div>
 
-  <div class="wy-back"><a href="index.html">← 返回课堂实践中心</a>　<a href="swiper-lesson.html">查看教师讲解版 →</a></div>
+  <div class="wy-back"><a href="index.html">← 返回课堂实践中心</a>　<a href="swiper-lesson.html">查看教师讲解版 →</a>　<a href="prompt.md">📄 提示词记录</a></div>
 
   <footer>Swiper 课堂操作任务 · 大国重器光影展（学生版） · 高级网页设计 · 2026-2027-1</footer>
 </div>
@@ -277,9 +277,9 @@ var ysw_swiper3 = new Swiper('#wySw3', {
     }
 });
 
-  // ── 任务 4：初始化 #wySw4，循环 + 3.2 秒自动播放 + 圆点 + 初始 effect + 键盘控制 ──
+  // ── 任务 4：初始化 #wySw4，循环 + 3.2 秒自动播放 + 圆点 + 初始 effect + 键盘/滚轮控制 ──
   // 作者：尹松旺 2026-11-05 GLM-5.3-Flash · ysw_swiper4：效果实验台轮播（slide 起步）
-  // 2026-11-09 追加：keyboard 键盘控制（超纲能力，点击轮播后按 ← / → 切换）
+  // 2026-11-09 追加：keyboard 键盘控制 + mousewheel 滚轮控制（超纲能力）
 var ysw_fx = 'slide';              // 当前轮播效果，切换按钮时更新
 var ysw_swiper4 = new Swiper('#wySw4', {
     loop: true,                    // 循环播放
@@ -293,9 +293,12 @@ var ysw_swiper4 = new Swiper('#wySw4', {
         el: '#wyPag4',             // 圆点分页器
         clickable: true
     },
-    keyboard: {                    // 超纲能力：键盘左右键控制
+    keyboard: {                    // 超纲能力①：键盘左右键控制
         enabled: true,
         onlyInViewport: true
+    },
+    mousewheel: {                  // 超纲能力②：鼠标滚轮控制翻页
+        releaseOnEdges: true       // 到首尾时释放滚轮，避免页面无法上下滚动
     }
 });
 
@@ -322,7 +325,8 @@ document.querySelectorAll('.wy-fx button').forEach(function(btn){
           effect: ysw_fx,              // 使用新选中的效果
           autoplay: { delay: 3200, disableOnInteraction: false },
           pagination: { el: '#wyPag4', clickable: true },
-          keyboard: { enabled: true, onlyInViewport: true }
+          keyboard: { enabled: true, onlyInViewport: true },
+          mousewheel: { releaseOnEdges: true }
       };
       // 若选择 creative（第 7 种·影视墙），追加 creativeEffect 自定义变换：
       // prev：上一张左移 30%、缩到 0.7、向左倾斜 15°；next：下一张右移 60%、缩到 0.85、向右倾斜 10°

@@ -58,3 +58,19 @@
 ## 2026-11-09 13:29:59 (Asia/Shanghai)
 - 模型: Kimi-K3
 - 提示词: 好的，提交吧（提交 prompt.md 及 swiper-task-ext.html 链接更新到 GitHub）
+
+## 2026-11-09 13:39:14 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 我需要你帮我添加一个提示词的链接
+
+## 2026-11-09 13:42:43 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 我需要你把提示词的链接放到任务1里面
+
+## 2026-11-09 13:46:11 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 挑一个课堂上没讲过的 Swiper 能力加上去：keyboard 键盘控制 / mousewheel 滚轮 / zoom 双击缩放 / parallax 视差
+
+## 2026-11-09 13:48:31 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 好的，提交吧

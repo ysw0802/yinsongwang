@@ -183,13 +183,38 @@ new Swiper('#wySw4', {
 - 点击轮播区域后按键盘 ← / → 可切换上一张/下一张；
 - 切换效果按钮时（含 creative），keyboard 控制依然有效。✅
 
+### 追加超纲能力② · mousewheel 鼠标滚轮控制
+
+**需求：** 在 keyboard 之外，再追加一个课堂未讲的能力——鼠标滚轮控制翻页。
+
+#### 提示词（我）
+
+> 我想给 Swiper 加鼠标滚轮控制翻页，但要注意到轮播首尾时不要拦截页面的上下滚动，怎么写？
+
+#### AI 回答
+
+```js
+new Swiper('#wySw4', {
+    mousewheel: {
+        releaseOnEdges: true      // 到首尾时释放滚轮事件，让页面可以正常上下滚动
+    }
+});
+```
+
+`releaseOnEdges: true` 是关键：当轮播处于第一张或最后一张时，Swiper 不再消费滚轮事件，滚轮事件会冒泡给浏览器，页面就能正常上下滚动；在中间位置时，滚轮上下滚动会切换 slide。
+
+#### 验证结论
+
+- 任务四轮播支持鼠标滚轮上下翻页；
+- 滚到第一张再往上滚、或最后一张再往下滚，页面可正常上下滚动（不被拦截）。✅
+
 ### 答辩四连问准备
 
 | 问题 | 答案 |
 |---|---|
-| 这段代码什么意思？ | `keyboard: { enabled: true, onlyInViewport: true }` 开启键盘控制，仅当轮播在视口内且获得焦点时响应左右方向键 |
-| AI 第一次给的哪里不对？ | AI 只给了 `keyboard: true`，缺少 `onlyInViewport`，页面多个轮播会同时响应造成冲突 |
-| 你改了什么？新参数的作用？ | 改为对象形式并加 `onlyInViewport: true`，限制只有当前可见轮播响应键盘 |
+| 这段代码什么意思？ | `keyboard: { enabled: true, onlyInViewport: true }` 开启键盘控制，仅当轮播在视口内且获得焦点时响应左右方向键；`mousewheel: { releaseOnEdges: true }` 开启滚轮翻页，到首尾时释放滚轮不拦截页面滚动 |
+| AI 第一次给的哪里不对？ | keyboard 只给了 `keyboard: true`，缺少 `onlyInViewport`，页面多个轮播会同时响应造成冲突 |
+| 你改了什么？新参数的作用？ | keyboard 改为对象形式加 `onlyInViewport: true` 限制只有当前可见轮播响应；mousewheel 加 `releaseOnEdges: true` 避免滚轮卡死页面滚动 |
 | 现场把 delay 改成指定值并解释预期变化？ | `autoplay.delay` 改 `1500` → 每张停留 1.5 秒，翻页更快；改 `5000` → 每张停留 5 秒，翻页更慢 |
 
 ---
