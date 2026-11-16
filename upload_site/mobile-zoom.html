@@ -3,9 +3,8 @@
   作    者：尹松旺
   建立时间：2026-11-16
   使用模型：GLM-5.3-Flash
-  功能简介：移动端图片查看器——双指缩放 1~4 倍（以两指中点为基准，不跳）、
-           双击 1x/2x 切换、放大后可单指拖动、缩回 1x 自动居中，
-           touch-action:none 接管手势，边界阻尼
+  功能简介：移动端媒体查看器——支持图片 / 视频切换，双指缩放 1~4 倍、
+           双击 1x/2x、放大后单指拖动、缩回 1x 自动居中；视频也可缩放查看
 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -39,12 +38,26 @@
       box-shadow: 0 20px 50px rgba(0,0,0,.5);
       position: relative;
     }
-    .ysw_viewer img {
+    .ysw_viewer img, .ysw_viewer video {
       width: 100%; height: 100%;
       object-fit: cover;
       will-change: transform;
       transition: transform .25s ease-out;
       transform-origin: center center;
+      display: block;
+    }
+
+    /* 媒体切换按钮 */
+    .ysw_switch {
+      display: flex; gap: 10px; margin-bottom: 14px;
+    }
+    .ysw_switch button {
+      padding: 8px 20px; border-radius: 999px; border: 1px solid #334155;
+      background: #1e293b; color: #94a3b8; font-size: 12px; letter-spacing: 2px;
+      cursor: pointer; transition: all .2s;
+    }
+    .ysw_switch button.ysw_active {
+      background: #3b82f6; color: #fff; border-color: #3b82f6;
     }
 
     /* 缩放比例指示器 */
@@ -63,12 +76,19 @@
 </head>
 <body>
   <div class="ysw_tip">📱 双指缩放请用手机打开 · 双击在 1x / 2x 之间切换</div>
-  <div class="ysw_h1">图片查看器</div>
-  <div class="ysw_hint">双指捏合缩放（以指中心为基准）<br>放大后单指拖动查看细节 · 缩回 1x 自动居中</div>
+  <div class="ysw_h1">媒体查看器</div>
+  <div class="ysw_hint">图片 / 视频都可双指捏合缩放<br>放大后单指拖动查看细节 · 缩回 1x 自动居中</div>
 
-  <!-- 图片容器 -->
+  <!-- 媒体切换 -->
+  <div class="ysw_switch">
+    <button id="yswBtnImg" class="ysw_active">🖼️ 图片</button>
+    <button id="yswBtnVid">🎬 视频</button>
+  </div>
+
+  <!-- 媒体容器 -->
   <div class="ysw_viewer" id="yswViewer">
     <img id="yswImg" src="swiper-imgs/c919_1.jpg" alt="C919 大飞机">
+    <video id="yswVid" src="swiper-imgs/zoom-video.mp4" controls playsinline webkit-playsinline style="display:none;"></video>
     <div class="ysw_scale_badge" id="yswBadge">1.0x</div>
   </div>
 
@@ -76,16 +96,19 @@
   <footer>高级网页设计 · 移动端触摸事件 · 任务三 · 2026-11-16</footer>
 
 <script>
-/* ysw_scale：当前缩放倍数，ysw_total 是"本次手势前的总倍数"
- * ysw_lastDist：上一帧两指距离，用于算比例
- * ysw_startDist：手势开始时两指距离（总缩放 = 上一次的 scale × 当前帧比例 / 起始帧比例）
- * ysw_totalScale：最近一次 pinch 手势结束后的最终倍数（单指拖动时保持）
- * ysw_dx / ysw_dy：图片相对容器的位移
- * ysw_pinch：是否处于双指 pinch 中（结束时用于保存最终倍数）
- * ysw_tapTime：上次点击时间（双击判断）
+/* ysw_target：当前被缩放的媒体元素（img 或 video）
+ * ysw_scale / ysw_totalScale：当前缩放倍数 / 最近一次 pinch 结束后的最终倍数
+ * ysw_lastDist / ysw_startDist：上一帧两指距离 / 手势起始两指距离
+ * ysw_dx / ysw_dy：媒体相对容器的位移
+ * ysw_pinch / ysw_isMoving：是否处于双指 pinch / 单指拖动 中
+ * ysw_lastTap：上次 touchend 时间戳（< 300ms 判定双击）
  */
-var ysw_img = document.getElementById('yswImg');
-var ysw_badge = document.getElementById('yswBadge');
+var $img = document.getElementById('yswImg');
+var $vid = document.getElementById('yswVid');
+var $badge = document.getElementById('yswBadge');
+var $btnImg = document.getElementById('yswBtnImg');
+var $btnVid = document.getElementById('yswBtnVid');
+var ysw_target = $img;   // 默认操作图片
 
 var ysw_scale = 1, ysw_totalScale = 1;
 var ysw_lastDist = 0, ysw_startDist = 0;
@@ -93,7 +116,37 @@ var ysw_startDX = 0, ysw_startDY = 0;
 var ysw_dx = 0, ysw_dy = 0;
 var ysw_pinch = false, ysw_isMoving = false;
 var ysw_prevX = 0, ysw_prevY = 0;
-var ysw_lastTap = 0; // 双击：两次间隔 < 300ms
+var ysw_lastTap = 0;
+
+/* 函数名：ysw_switchMedia
+ * 功能：切换图片 / 视频，切换时重置所有缩放状态（避免残留 transform）
+ */
+function ysw_switchMedia(useVideo) {
+  ysw_scale = 1; ysw_totalScale = 1;
+  ysw_dx = 0; ysw_dy = 0;
+  ysw_pinch = false; ysw_isMoving = false;
+  ysw_lastDist = 0; ysw_lastTap = 0;
+
+  if (useVideo) {
+    $img.style.display = 'none';
+    $vid.style.display = 'block';
+    ysw_target = $vid;
+    $btnVid.classList.add('ysw_active');
+    $btnImg.classList.remove('ysw_active');
+  } else {
+    $vid.style.display = 'none';
+    $img.style.display = 'block';
+    ysw_target = $img;
+    $btnImg.classList.add('ysw_active');
+    $btnVid.classList.remove('ysw_active');
+    // 切回图片时暂停视频
+    $vid.pause && $vid.pause();
+  }
+  ysw_target.style.transition = 'none';
+  ysw_applyTransform();
+}
+$btnImg.addEventListener('click', function () { ysw_switchMedia(false); });
+$btnVid.addEventListener('click', function () { ysw_switchMedia(true); });
 
 /* 函数名：ysw_dist
  * 功能：勾股定理算两指直线距离
@@ -102,30 +155,19 @@ function ysw_dist(t1, t2) {
   return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
 }
 
-/* 函数名：ysw_midXY
- * 功能：返回两指中点坐标
- */
-function ysw_midXY(t1, t2) {
-  return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
-}
-
 /* 函数名：ysw_applyTransform
- * 功能：把 ysw_scale / ysw_dx / ysw_dy 一次性写入 img 的 transform
- * 同时更新缩放比例徽章
+ * 功能：把 scale / dx / dy 一次性写入 ysw_target 的 transform，同时更新徽章
  */
 function ysw_applyTransform() {
-  ysw_img.style.transform = 'translate(' + ysw_dx + 'px,' + ysw_dy + 'px) scale(' + ysw_scale + ')';
-  ysw_badge.textContent = ysw_scale.toFixed(2) + 'x';
+  ysw_target.style.transform = 'translate(' + ysw_dx + 'px,' + ysw_dy + 'px) scale(' + ysw_scale + ')';
+  $badge.textContent = ysw_scale.toFixed(2) + 'x';
 }
 
 /* 函数名：ysw_clamp
- * 功能：把位移限定在边界内（1x 时强制 dx=dy=0，放大后按 scale 计算边界）
+ * 功能：边界限位——1x 强制居中；放大后按 scale 计算可移动范围
  */
 function ysw_clamp() {
-  if (ysw_scale <= 1) {
-    ysw_dx = 0; ysw_dy = 0; return;
-  }
-  // 以容器中心为原点，图片放大后多出的半个边长 = viewer 边长 × (scale-1)/2
+  if (ysw_scale <= 1) { ysw_dx = 0; ysw_dy = 0; return; }
   var half = 420 * (ysw_scale - 1) / 2;
   if (ysw_dx >  half) ysw_dx =  half;
   if (ysw_dx < -half) ysw_dx = -half;
@@ -134,46 +176,41 @@ function ysw_clamp() {
 }
 
 /* 函数名：ysw_centeredTransition
- * 功能：双击切换时的平滑过渡（0.25s），通过暂时加 transition 类实现
+ * 功能：双击切换时 0.25s 平滑过渡到目标位置
  */
 function ysw_centeredTransition() {
   ysw_dx = 0; ysw_dy = 0;
-  ysw_img.style.transition = 'transform .25s ease-out';
-  setTimeout(function () { ysw_img.style.transition = 'none'; }, 260);
+  ysw_target.style.transition = 'transform .25s ease-out';
+  setTimeout(function () { ysw_target.style.transition = 'none'; }, 260);
 }
 
-// 初始关闭 transition，让跟手拖动更丝滑
-ysw_img.style.transition = 'none';
+ysw_target.style.transition = 'none';
 
-/* touchstart：记录单指/双指状态，清掉上一轮手势的残留数据 */
+/* touchstart：记录单指/双指状态，清掉上一轮残留 */
 document.getElementById('yswViewer').addEventListener('touchstart', function (e) {
   ysw_lastDist = 0;
   if (e.touches.length >= 2) {
-    // 双指：进入 pinch 模式，记录起始距离和基准位移
     ysw_pinch = true;
     var t1 = e.touches[0], t2 = e.touches[1];
     ysw_startDist = ysw_dist(t1, t2);
     ysw_lastDist = ysw_startDist;
     ysw_startDX = ysw_dx; ysw_startDY = ysw_dy;
   } else if (e.touches.length === 1 && ysw_scale > 1) {
-    // 单指且放大：进入拖动模式
     ysw_isMoving = true;
     ysw_prevX = e.touches[0].clientX;
     ysw_prevY = e.touches[0].clientY;
   }
 }, { passive: false });
 
-/* touchmove：双指时算 scale，单指且放大时算 dx/dy */
+/* touchmove：双指算 scale，单指放大时算 dx/dy */
 document.getElementById('yswViewer').addEventListener('touchmove', function (e) {
-  e.preventDefault(); // 阻止页面在缩放时跟着放大（passive:false 才能生效）
+  e.preventDefault();
 
   if (ysw_pinch && e.touches.length >= 2) {
     var d = ysw_dist(e.touches[0], e.touches[1]);
     if (ysw_lastDist) {
-      // 关键：总倍数 = 上次 pinch 最终 × 本次比例 / 起始帧比例
       var ratio = d / ysw_lastDist;
       ysw_scale = ysw_totalScale * ratio * (ysw_lastDist / ysw_startDist);
-      // 1~4 倍限制
       if (ysw_scale < 1) ysw_scale = 1;
       if (ysw_scale > 4) ysw_scale = 4;
       ysw_clamp();
@@ -190,10 +227,9 @@ document.getElementById('yswViewer').addEventListener('touchmove', function (e) 
   }
 }, { passive: false });
 
-/* touchend：收尾。双指松手 → 保存最终 scale；单指松手 → 检查双击 */
+/* touchend：收尾。双指松手 → 保存最终 scale；单指松手 → 检测双击 */
 document.getElementById('yswViewer').addEventListener('touchend', function (e) {
   if (ysw_pinch && e.touches.length < 2) {
-    // pinch 结束：保存最终倍数
     ysw_totalScale = ysw_scale;
     ysw_pinch = false;
     ysw_lastDist = 0;
@@ -205,7 +241,6 @@ document.getElementById('yswViewer').addEventListener('touchend', function (e) {
     ysw_clamp();
     ysw_applyTransform();
 
-    // 双击检测：两次 touchend 间隔 < 300ms → 在 1x 和 2x 之间切换
     var now = Date.now();
     if (now - ysw_lastTap < 300) {
       ysw_lastTap = 0;
@@ -222,7 +257,7 @@ document.getElementById('yswViewer').addEventListener('touchend', function (e) {
   }
 }, { passive: true });
 
-/* touchcancel：被系统打断（来电/手势返回），清理状态，避免卡住 */
+/* touchcancel：系统打断（来电/手势返回），清理状态 */
 document.getElementById('yswViewer').addEventListener('touchcancel', function () {
   ysw_pinch = false; ysw_isMoving = false; ysw_lastDist = 0;
 });
