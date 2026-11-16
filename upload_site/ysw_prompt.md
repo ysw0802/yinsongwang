@@ -74,3 +74,39 @@
 ## 2026-11-09 13:48:31 (Asia/Shanghai)
 - 模型: Kimi-K3
 - 提示词: 好的，提交吧
+
+## 2026-11-09 14:04:30 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 我需要这样的提示词效果（左右两栏对照式提示词展示，第1轮vs第2轮，带红绿徽章、图片预览、状态行、代码块、参数对照表）
+
+## 2026-11-09 14:50:07 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 根据 prompt.md 和 ysw_prompt.md 中的提示词，为任务二（creative）和任务三（keyboard/mousewheel）创建类似任务一的两轮对照卡片效果，内容不要和原来一样
+
+## 2026-11-09 14:53:26 (Asia/Shanghai)
+- 模型: Kimi-K3
+- 提示词: 请为任务二和任务三补充更详细的对比说明
+
+## 2026-11-12 13:43:23 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: npm init -y 报错：无法加载文件 E:\node\npm.ps1，因为在此系统上禁止运行脚本（PSSecurityException，附截图）
+
+## 2026-11-12 14:41:14 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 运行 c:/Users/20827/Desktop/高级网页设计/upload_site/swiper-task-ext.html
+
+## 2026-11-12 15:12:56 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 运行 swiper-task-ext.html
+
+## 2026-11-12 15:37:53 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 滚轮新增效果代码位置
+
+## 2026-11-16 13:42:23 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: https://spontaneous-valkyrie-4e4229.netlify.app/mobile-events-lesson 完成任务
+
+## 2026-11-16 14:30:00 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 我需要在真正的手机上可以摇一摇（重写 mobile-sensor.html：高通滤波 delta 判定、统一权限入口、可观测性面板、时间戳冷却）

@@ -1,0 +1,202 @@
+<!--
+  文件名称：mobile-gesture.html
+  作    者：尹松旺
+  建立时间：2026-11-16
+  使用模型：GLM-5.3-Flash
+  功能简介：移动端触摸手势识别练习——中华美食卡片左右滑动切换，阈值 40px，
+           0.3s 过渡动画，300ms 冷却防连滑，边界提示，touch-action: pan-y
+           保证纵向仍能滚动页面
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>美食卡片 · 滑动切换（任务二）</title>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+    body { background: linear-gradient(180deg, #fff7ed, #fef3c7); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 16px 60px; }
+
+    .ysw_header { text-align: center; margin-bottom: 24px; }
+    .ysw_header h1 { margin: 0; font-size: 22px; color: #9a3412; letter-spacing: 2px; }
+    .ysw_header p { margin: 6px 0 0; font-size: 13px; color: #c2410c; }
+
+    /* 卡片容器：pan-y 保证纵向仍能滚动 */
+    .ysw_card-wrap {
+      width: 100%;
+      max-width: 380px;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-touch-callout: none;
+      position: relative;
+      height: 360px;
+    }
+
+    /* 卡片 */
+    .ysw_card {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(154, 52, 18, .25);
+      color: #fff;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(60px);
+      transition: transform .3s ease, opacity .3s ease;
+      backdrop-filter: blur(6px);
+    }
+    .ysw_card.ysw_on { opacity: 1; transform: translateX(0); }
+    .ysw_card.ysw_prev { opacity: 0; transform: translateX(-60px); }
+
+    .ysw_card .ysw_num { font-size: 14px; opacity: .75; letter-spacing: 4px; }
+    .ysw_card h2 { margin: 10px 0 6px; font-size: 30px; letter-spacing: 2px; }
+    .ysw_card p { margin: 0; font-size: 14px; line-height: 1.9; opacity: .92; max-width: 280px; }
+
+    /* 四个渐变背景 */
+    .ysw_card[data-idx="0"] { background: linear-gradient(160deg, #dc2626, #f59e0b); }
+    .ysw_card[data-idx="1"] { background: linear-gradient(160deg, #ea580c, #7c2d12); }
+    .ysw_card[data-idx="2"] { background: linear-gradient(160deg, #be185d, #f97316); }
+    .ysw_card[data-idx="3"] { background: linear-gradient(160deg, #0f766e, #facc15); }
+
+    /* 底部指示器 */
+    .ysw_indicator { margin-top: 20px; font-size: 14px; color: #9a3412; font-weight: 700; letter-spacing: 2px; }
+
+    /* 边界提示 */
+    .ysw_toast {
+      position: fixed; left: 50%; top: 40%; transform: translateX(-50%);
+      background: rgba(0,0,0,.72); color: #fff; padding: 10px 22px; border-radius: 999px;
+      font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s;
+      z-index: 99;
+    }
+    .ysw_toast.ysw_show { opacity: 1; }
+
+    .ysw_back { text-align: center; margin-top: 32px; }
+    .ysw_back a { display: inline-block; text-decoration: none; color: #9a3412; font-size: 14px; font-weight: 700; background: #fff; border: 1px solid #fed7aa; border-radius: 999px; padding: 10px 22px; }
+    .ysw_back a:hover { background: #fed7aa; }
+
+    footer { margin-top: 24px; color: #9a3412; font-size: 12px; opacity: .7; }
+  </style>
+</head>
+<body>
+  <div class="ysw_header">
+    <h1>中华美食卡片</h1>
+    <p>← 左滑下一道 · 右滑上一道 →</p>
+  </div>
+
+  <!-- 卡片容器 -->
+  <div class="ysw_card-wrap" id="yswCardWrap">
+    <div class="ysw_card ysw_on" data-idx="0">
+      <span class="ysw_num">NO. 01</span>
+      <h2>麻婆豆腐</h2>
+      <p>四川名菜，麻辣鲜香。嫩滑豆腐浸在红油花椒里，一口下去满嘴川味，配一碗白米饭能多吃半碗。</p>
+    </div>
+    <div class="ysw_card" data-idx="1">
+      <span class="ysw_num">NO. 02</span>
+      <h2>北京烤鸭</h2>
+      <p>果木炭火慢烤，皮脆肉嫩。片成薄片裹甜面酱、葱白、黄瓜丝，是老北京最得意的待客之道。</p>
+    </div>
+    <div class="ysw_card" data-idx="2">
+      <span class="ysw_num">NO. 03</span>
+      <h2>东坡肉</h2>
+      <p>苏轼谪居黄州时创造，肥瘦相间、入口即化。冰糖老抽小火慢炖，每一块都是岁月的味道。</p>
+    </div>
+    <div class="ysw_card" data-idx="3">
+      <span class="ysw_num">NO. 04</span>
+      <h2>蟹黄小笼包</h2>
+      <p>皮薄馅大，汤汁鲜美。扬州正宗的蟹黄小笼，咬开一个小口先吸汤，再蘸醋吃皮和馅。</p>
+    </div>
+  </div>
+
+  <!-- 底部指示器 -->
+  <div class="ysw_indicator" id="yswIndicator">第 1 / 4 张</div>
+
+  <!-- 边界提示 Toast -->
+  <div class="ysw_toast" id="yswToast"></div>
+
+  <div class="ysw_back"><a href="index.html">← 返回首页</a></div>
+
+  <footer>高级网页设计 · 移动端触摸事件 · 任务二 · 2026-11-16</footer>
+
+<script>
+/* ysw_prevX / ysw_prevY：按下起点坐标
+ * ysw_idx：当前卡片索引
+ * ysw_total：卡片总数
+ * ysw_locked：冷却锁，防止快速连滑跳两张
+ * 阈值 ysw_line = 40px，距离小于此值算误触点击
+ */
+var ysw_prevX = 0, ysw_prevY = 0, ysw_idx = 0, ysw_total = 4, ysw_locked = false;
+var ysw_wrap = document.getElementById('yswCardWrap');
+var ysw_indicator = document.getElementById('yswIndicator');
+var ysw_toast = document.getElementById('yswToast');
+
+/* 函数名：ysw_showToast
+ * 功能：显示边界提示文字，1.2 秒后自动隐藏
+ */
+function ysw_showToast(msg) {
+  ysw_toast.textContent = msg;
+  ysw_toast.classList.add('ysw_show');
+  clearTimeout(ysw_showToast._t);
+  ysw_showToast._t = setTimeout(function () { ysw_toast.classList.remove('ysw_show'); }, 1200);
+}
+
+/* 函数名：ysw_go
+ * 功能：切换卡片，更新 active 类和底部指示器
+ */
+function ysw_go(dir) {
+  var cards = document.querySelectorAll('.ysw_card');
+  cards.forEach(function (c) { c.classList.remove('ysw_on', 'ysw_prev'); });
+  cards[ysw_idx].classList.add('ysw_on');
+  ysw_indicator.textContent = '第 ' + (ysw_idx + 1) + ' / ' + ysw_total + ' 张';
+}
+
+/* 函数名：ysw_onStart
+ * 功能：touchstart 记录起点坐标，冷却锁期间不响应
+ */
+ysw_wrap.addEventListener('touchstart', function (e) {
+  if (ysw_locked) return;
+  var t = e.touches[0];
+  ysw_prevX = t.clientX;
+  ysw_prevY = t.clientY;
+}, { passive: true });
+
+/* 函数名：ysw_onEnd
+ * 功能：touchend 用 changedTouches[0] 计算横向位移，阈值 40px，左滑下一张右滑上一张
+ */
+ysw_wrap.addEventListener('touchend', function (e) {
+  if (ysw_locked) return;
+  var t = e.changedTouches[0]; // 抬手时用它，touches 里已经没这根手指
+  var wy_dx = t.clientX - ysw_prevX;
+  var wy_dy = t.clientY - ysw_prevY;
+  var ysw_line = 40; // 阈值：太小算点击，不算滑动
+
+  // 距离不足 → 误触，不切换
+  if (Math.abs(wy_dx) < ysw_line && Math.abs(wy_dy) < ysw_line) return;
+  // 纵向位移更大 → 上下滑，不切换卡片
+  if (Math.abs(wy_dy) > Math.abs(wy_dx)) return;
+
+  // 冷却 300ms，防止快速连滑跳两张
+  ysw_locked = true;
+  setTimeout(function () { ysw_locked = false; }, 300);
+
+  if (wy_dx < 0) { // 左滑 → 下一张
+    if (ysw_idx >= ysw_total - 1) { ysw_showToast('已经是最后一张'); return; }
+    ysw_idx++;
+  } else { // 右滑 → 上一张
+    if (ysw_idx <= 0) { ysw_showToast('已经是第一张'); return; }
+    ysw_idx--;
+  }
+  ysw_go();
+}, { passive: true });
+
+// 初始化第一张
+ysw_go();
+</script>
+</body>
+</html>

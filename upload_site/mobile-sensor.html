@@ -1,0 +1,316 @@
+<!--
+  文件名称：mobile-sensor.html
+  作    者：尹松旺
+  建立时间：2026-11-16
+  使用模型：GLM-5.3-Flash
+  功能简介：移动端"摇一摇抽今日菜谱"——监听 devicemotion 传感器计算加速度，
+           超过阈值 18 触发抽取，1.5 秒冷却防连发；iOS 需点击申请权限；
+           检测不到传感器时降级为"点我抽一次"按钮，不报错不白屏
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>摇一摇 · 抽今日菜谱（任务四）</title>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: "Microsoft YaHei", sans-serif; }
+    body {
+      min-height: 100vh; background: linear-gradient(180deg, #ffedd5, #fed7aa);
+      display: flex; flex-direction: column; align-items: center; padding: 50px 16px 60px;
+    }
+
+    h1 { margin: 0; font-size: 20px; color: #9a3412; letter-spacing: 3px; }
+    .ysw_sub { font-size: 12px; color: #c2410c; margin: 6px 0 28px; }
+
+    /* 摇一摇区域 */
+    .ysw_shake {
+      width: 100%; max-width: 360px; height: 360px;
+      background: linear-gradient(160deg, #ea580c, #dc2626);
+      border-radius: 32px; color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 20px 50px rgba(220, 38, 38, .25);
+      position: relative; overflow: hidden;
+    }
+    .ysw_shake::before, .ysw_shake::after {
+      content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.2); background: transparent;
+    }
+    .ysw_shake::before { top: -60px; right: -80px; }
+    .ysw_shake::after  { bottom: -80px; left: -60px; }
+
+    .ysw_shake_icon { font-size: 60px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.2)); }
+    .ysw_shake_text { margin-top: 14px; font-size: 16px; letter-spacing: 2px; opacity: .9; }
+    .ysw_shake_sub  { margin-top: 4px; font-size: 11px; opacity: .6; letter-spacing: 1px; }
+
+    /* 摇晃动画 */
+    .ysw_shake.ysw_anim { animation: yswAnim .35s ease-in-out 3; }
+    @keyframes yswAnim {
+      0%,100% { transform: translateX(0) rotate(0); }
+      25% { transform: translateX(-8px) rotate(-4deg); }
+      50% { transform: translateX(8px)  rotate(4deg); }
+      75% { transform: translateX(-5px) rotate(-2deg); }
+    }
+
+    /* 结果卡片 */
+    .ysw_result {
+      margin-top: 22px; width: 100%; max-width: 360px;
+      min-height: 80px; padding: 18px 22px;
+      background: #fff; border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(154, 52, 18, .12);
+      text-align: center; opacity: 0; transform: translateY(12px);
+      transition: opacity .3s, transform .3s;
+    }
+    .ysw_result.ysw_show { opacity: 1; transform: translateY(0); }
+    .ysw_result .ysw_meal { font-size: 18px; color: #dc2626; font-weight: 800; letter-spacing: 2px; }
+    .ysw_result .ysw_desc { font-size: 12px; color: #78350f; margin-top: 6px; line-height: 1.8; }
+
+    /* 降级提示与按钮 */
+    .ysw_fallback {
+      margin-top: 20px; text-align: center; font-size: 13px; color: #9a3412; display: none;
+    }
+    .ysw_fallback.ysw_show { display: block; }
+    .ysw_fallback button {
+      margin-top: 12px; padding: 12px 28px; border-radius: 999px; border: none;
+      background: linear-gradient(135deg, #dc2626, #ea580c); color: #fff; font-weight: 800;
+      font-size: 14px; letter-spacing: 2px; cursor: pointer;
+    }
+    .ysw_fallback button:active { transform: scale(.96); }
+
+    /* iOS 权限按钮 */
+    .ysw_ios_perm {
+      margin-top: 16px; padding: 10px 22px; border-radius: 999px;
+      background: #fff7ed; border: 1px dashed #c2410c; color: #c2410c;
+      font-size: 12px; letter-spacing: 1px; display: none; cursor: pointer;
+    }
+    .ysw_ios_perm.ysw_show { display: inline-block; }
+
+    /* 冷却状态 */
+    .ysw_cooldown {
+      position: absolute; bottom: 14px; font-size: 11px; opacity: .5; letter-spacing: 2px;
+    }
+
+    /* 可观测性面板（真机调试必备） */
+    .ysw_debug {
+      margin-top: 18px; width: 100%; max-width: 360px;
+      background: #1e293b; color: #e2e8f0; border-radius: 14px; padding: 14px 16px;
+      font-size: 12px; line-height: 1.9; letter-spacing: .5px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .ysw_debug .ysw_d_line { display: flex; justify-content: space-between; }
+    .ysw_debug .ysw_d_k { color: #94a3b8; }
+    .ysw_debug .ysw_d_v { color: #fbbf24; font-weight: 700; font-family: Consolas, monospace; }
+    .ysw_debug .ysw_d_v.ok   { color: #4ade80; }
+    .ysw_debug .ysw_d_v.bad  { color: #f87171; }
+
+    .ysw_back { margin-top: 18px; }
+    .ysw_back a { color: #9a3412; font-size: 13px; font-weight: 700; text-decoration: none; }
+    footer { margin-top: 20px; font-size: 11px; color: #c2410c; opacity: .6; }
+  </style>
+</head>
+<body>
+  <h1>摇一摇 · 抽今日菜谱</h1>
+  <div class="ysw_sub">📱 请用手机打开 · 摇一摇抽惊喜</div>
+
+  <!-- 摇一摇区域 -->
+  <div class="ysw_shake" id="yswShake">
+    <div class="ysw_shake_icon">🍳</div>
+    <div class="ysw_shake_text">摇一摇手机</div>
+    <div class="ysw_shake_sub">（持续摇动 1~2 秒）</div>
+    <div class="ysw_cooldown" id="yswCd"></div>
+  </div>
+
+  <!-- 结果卡片 -->
+  <div class="ysw_result" id="yswResult"></div>
+
+  <!-- iOS 权限申请按钮 -->
+  <button class="ysw_ios_perm" id="yswIOSPerm">📱 iOS 13+：点我开启传感器权限</button>
+
+  <!-- 降级：不支持设备时显示 -->
+  <div class="ysw_fallback" id="yswFallback">
+    当前设备不支持加速度传感器，请用手机打开
+    <br>
+    <button id="yswManualBtn">🎲 点我抽一次</button>
+  </div>
+
+  <!-- 可观测性面板（真机调试必备） -->
+  <div class="ysw_debug" id="yswDebug">
+    <div class="ysw_d_line"><span class="ysw_d_k">安全上下文 HTTPS</span><span class="ysw_d_v" id="yswDbgSecure">检测中…</span></div>
+    <div class="ysw_d_line"><span class="ysw_d_k">DeviceMotionEvent</span><span class="ysw_d_v" id="yswDbgMotion">检测中…</span></div>
+    <div class="ysw_d_line"><span class="ysw_d_k">权限状态</span><span class="ysw_d_v" id="yswDbgPerm">未请求</span></div>
+    <div class="ysw_d_line"><span class="ysw_d_k">传感器监听</span><span class="ysw_d_v" id="yswDbgListening">未开启</span></div>
+    <div class="ysw_d_line"><span class="ysw_d_k">最近一次触发</span><span class="ysw_d_v" id="yswDbgDelta">—</span></div>
+    <div class="ysw_d_line"><span class="ysw_d_k">实时模长（含重力）</span><span class="ysw_d_v" id="yswDbgMag">—</span></div>
+  </div>
+
+  <div class="ysw_back"><a href="index.html">← 返回首页</a></div>
+  <footer>高级网页设计 · 移动端触摸事件 · 任务四 · 2026-11-16</footer>
+
+<script>
+/* ysw_meals：7 道随机菜谱
+ * ysw_threshold：高通滤波阈值（相邻两次模长差 > 10 判定为"突发摇动"）
+ *                纯摇一摇实测 8~12 都能触发，设 10 兼顾灵敏度与抗误触
+ * ysw_interval_ms：冷却间隔（毫秒）
+ * ysw_lastMag：上一帧加速度模长（用于 delta 判断）
+ * ysw_lastShakeTime：上一次触发的时间戳
+ */
+var ysw_meals = [
+  { name: '麻婆豆腐',       desc: '四川名菜 · 麻辣鲜香 · 配一碗白米饭' },
+  { name: '番茄炒蛋',       desc: '家常经典 · 酸甜可口 · 五分钟上桌' },
+  { name: '红烧肉',         desc: '肥而不腻 · 入口即化 · 冰糖老抽慢炖' },
+  { name: '青椒土豆丝',     desc: '酸辣爽脆 · 配粥下饭 · 快手家常菜' },
+  { name: '宫保鸡丁',       desc: '川味经典 · 花生鸡丁 · 糖醋微辣' },
+  { name: '蛋炒饭',         desc: '粒粒分明 · 葱香四溢 · 一口暖胃' },
+  { name: '酸辣汤',         desc: '开胃解腻 · 酸辣爽口 · 冷天一碗冒汗' }
+];
+
+var ysw_THRESHOLD = 10;        // 可调阈值：真机摇不动 → 改小；随便晃就触发 → 改大
+var ysw_INTERVAL_MS = 1500;    // 冷却时间
+var ysw_lastMag = 0;           // 上一帧模长
+var ysw_lastShakeTime = 0;     // 上次触发时间
+var ysw_listening = false;     // 是否已开始监听（调试面板用）
+
+// 调试面板 DOM
+var $dbgSecure    = document.getElementById('yswDbgSecure');
+var $dbgMotion    = document.getElementById('yswDbgMotion');
+var $dbgPerm      = document.getElementById('yswDbgPerm');
+var $dbgListening = document.getElementById('yswDbgListening');
+var $dbgDelta     = document.getElementById('yswDbgDelta');
+var $dbgMag       = document.getElementById('yswDbgMag');
+
+/* 函数名：ysw_pickMeal
+ * 功能：随机抽一道菜，弹出结果卡片 + 触发摇晃动画 + 进入冷却
+ */
+function ysw_pickMeal() {
+  var now = Date.now();
+  if (now - ysw_lastShakeTime < ysw_INTERVAL_MS) return;
+  ysw_lastShakeTime = now;
+
+  // 摇晃动画（只播一次）
+  var $shake = document.getElementById('yswShake');
+  $shake.classList.remove('ysw_anim');
+  void $shake.offsetWidth;
+  $shake.classList.add('ysw_anim');
+
+  // 随机一道
+  var m = ysw_meals[Math.floor(Math.random() * ysw_meals.length)];
+  var $result = document.getElementById('yswResult');
+  $result.innerHTML = '<div class="ysw_meal">🍽️ 今日推荐：' + m.name + '</div>'
+                    + '<div class="ysw_desc">' + m.desc + '</div>';
+  $result.classList.add('ysw_show');
+}
+
+/* 函数名：ysw_extractAcc
+ * 功能：从事件里取"有加速度数据"的对象。优先 accelerationIncludingGravity，
+ *       它为 null 时退到 acceleration（不含重力）。两者都 null 才返回 null
+ */
+function ysw_extractAcc(e) {
+  if (e.accelerationIncludingGravity &&
+      e.accelerationIncludingGravity.x != null) return e.accelerationIncludingGravity;
+  if (e.acceleration && e.acceleration.x != null) return e.acceleration;
+  return null;
+}
+
+/* 函数名：ysw_mag
+ * 功能：勾股定理算三轴合成加速度模长
+ */
+function ysw_mag(a) {
+  var x = a.x || 0, y = a.y || 0, z = a.z || 0;
+  return Math.sqrt(x*x + y*y + z*z);
+}
+
+/* 函数名：ysw_startMotion
+ * 功能：注册 devicemotion 监听，用 delta（相邻两次模长差）判定"突发摇动"
+ *       —— 比纯绝对值阈值稳得多：只对"突变"敏感，手机平放/走路等恒定速度不误触发
+ */
+function ysw_startMotion() {
+  window.addEventListener('devicemotion', function (e) {
+    var acc = ysw_extractAcc(e);
+    if (!acc) return; // 这一帧没数据，跳过（某些机型偶尔断帧）
+
+    var mag = ysw_mag(acc);
+    // 调试面板实时更新：当前模长 + 本次 delta
+    $dbgMag.textContent = mag.toFixed(1);
+    var delta = Math.abs(mag - ysw_lastMag);
+    if (delta > 0) $dbgDelta.textContent = '+' + delta.toFixed(1);
+
+    // 连续两帧差值大于阈值 → 判为摇动
+    if (delta > ysw_THRESHOLD) {
+      ysw_pickMeal();
+    }
+    ysw_lastMag = mag;
+  });
+  ysw_listening = true;
+  $dbgListening.textContent = '✅ 已开启';
+  $dbgListening.className = 'ysw_d_v ok';
+}
+
+/* 函数名：ysw_requestPermAndStart
+ * 功能：统一权限申请入口。iOS 13+ 和部分 Android Chrome 都需要手动点按钮触发 requestPermission
+ *       permission 必须由 user gesture（click）调用，否则浏览器直接拒绝
+ */
+function ysw_requestPermAndStart() {
+  try {
+    DeviceMotionEvent.requestPermission().then(function (r) {
+      $dbgPerm.textContent = r;
+      if (r === 'granted') {
+        document.getElementById('yswIOSPerm').classList.remove('ysw_show');
+        ysw_startMotion();
+      }
+    }).catch(function (err) {
+      $dbgPerm.textContent = '拒绝/异常';
+      console.warn('requestPermission failed:', err);
+    });
+  } catch (err) {
+    // requestPermission 不存在 → 说明此设备不需要权限（老 iOS / 多数 Android），直接监听
+    $dbgPerm.textContent = '无需申请';
+    ysw_startMotion();
+  }
+}
+
+/* 函数名：ysw_init
+ * 功能：页面加载时的能力检测 + UI 渲染，所有检测结果进可观测性面板
+ */
+function ysw_init() {
+  // ① 安全上下文（非 HTTPS 的 localhost 也可视为安全）
+  $dbgSecure.textContent = window.isSecureContext ? '✅ OK' : '❌ 非安全';
+  $dbgSecure.className = window.isSecureContext ? 'ysw_d_v ok' : 'ysw_d_v bad';
+
+  // ② DeviceMotionEvent 是否存在
+  var hasMotion = typeof DeviceMotionEvent !== 'undefined';
+  $dbgMotion.textContent = hasMotion ? '✅ 存在' : '❌ 不存在';
+  $dbgMotion.className = hasMotion ? 'ysw_d_v ok' : 'ysw_d_v bad';
+
+  // ③ 权限申请能力：有 requestPermission 方法就必须按钮触发
+  var needsPerm = hasMotion && typeof DeviceMotionEvent.requestPermission === 'function';
+
+  if (needsPerm) {
+    // iOS 13+ / 部分 Android Chrome：需要用户手动点按钮申请
+    document.getElementById('yswIOSPerm').classList.add('ysw_show');
+    document.getElementById('yswIOSPerm').addEventListener('click', ysw_requestPermAndStart);
+    // 预先尝试 addEventListener：如果系统已经授权（极少），事件会直接开始派发
+    // 如果没授权，监听会被浏览器忽略，点按钮后再 startMotion 也不晚
+    window.addEventListener('devicemotion', function () {
+      $dbgPerm.textContent = '✅ 已授权';
+      if (!ysw_listening) { ysw_lastMag = 0; ysw_startMotion(); }
+    }, { once: true });
+  } else if (hasMotion) {
+    // 有传感器 + 不需要权限：直接监听
+    $dbgPerm.textContent = '无需申请';
+    ysw_startMotion();
+  } else {
+    // 连 DeviceMotionEvent 都没有：展示降级
+    $dbgPerm.textContent = '无传感器';
+    document.getElementById('yswFallback').classList.add('ysw_show');
+    document.getElementById('yswManualBtn').addEventListener('click', ysw_pickMeal);
+    // 把调试面板的监听状态也标红
+    $dbgListening.textContent = '❌ 无设备';
+    $dbgListening.className = 'ysw_d_v bad';
+  }
+}
+
+ysw_init();
+</script>
+</body>
+</html>
