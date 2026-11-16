@@ -118,3 +118,7 @@
 ## 2026-11-16 15:00:00 (Asia/Shanghai)
 - 模型: GLM-5.3-Flash
 - 提示词: 把这个视频放到任务三里面（video(1).mp4 复制到 swiper-imgs/zoom-video.mp4，mobile-zoom.html 增加图片/视频切换，视频也支持双指缩放）
+
+## 2026-11-16 15:15:00 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 把这个视频放到任务4里面（video(2).mp4 → swiper-imgs/shake-demo.mp4，mobile-sensor.html 摇出菜谱后显示做法演示视频）

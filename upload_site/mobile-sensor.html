@@ -66,6 +66,23 @@
     .ysw_result .ysw_meal { font-size: 18px; color: #dc2626; font-weight: 800; letter-spacing: 2px; }
     .ysw_result .ysw_desc { font-size: 12px; color: #78350f; margin-top: 6px; line-height: 1.8; }
 
+    /* 做法演示视频 */
+    .ysw_demo {
+      margin-top: 14px; width: 100%; max-width: 360px;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 6px 20px rgba(154, 52, 18, .15);
+      background: #000;
+      display: none; opacity: 0; transform: translateY(8px);
+      transition: opacity .3s, transform .3s;
+    }
+    .ysw_demo.ysw_show { display: block; opacity: 1; transform: translateY(0); }
+    .ysw_demo video { width: 100%; height: auto; display: block; }
+    .ysw_demo_label {
+      padding: 6px 14px; font-size: 11px; color: #fff;
+      background: linear-gradient(135deg, #dc2626, #ea580c);
+      letter-spacing: 2px; text-align: center;
+    }
+
     /* 降级提示与按钮 */
     .ysw_fallback {
       margin-top: 20px; text-align: center; font-size: 13px; color: #9a3412; display: none;
@@ -124,6 +141,12 @@
   <!-- 结果卡片 -->
   <div class="ysw_result" id="yswResult"></div>
 
+  <!-- 做法演示视频（摇出菜谱后出现） -->
+  <div class="ysw_demo" id="yswDemo">
+    <div class="ysw_demo_label">🎬 今日菜谱做法演示</div>
+    <video id="yswDemoVid" src="swiper-imgs/shake-demo.mp4" controls autoplay muted loop playsinline webkit-playsinline></video>
+  </div>
+
   <!-- iOS 权限申请按钮 -->
   <button class="ysw_ios_perm" id="yswIOSPerm">📱 iOS 13+：点我开启传感器权限</button>
 
@@ -180,7 +203,7 @@ var $dbgDelta     = document.getElementById('yswDbgDelta');
 var $dbgMag       = document.getElementById('yswDbgMag');
 
 /* 函数名：ysw_pickMeal
- * 功能：随机抽一道菜，弹出结果卡片 + 触发摇晃动画 + 进入冷却
+ * 功能：随机抽一道菜，弹出结果卡片 + 触发摇晃动画 + 显示做法演示视频 + 进入冷却
  */
 function ysw_pickMeal() {
   var now = Date.now();
@@ -199,6 +222,15 @@ function ysw_pickMeal() {
   $result.innerHTML = '<div class="ysw_meal">🍽️ 今日推荐：' + m.name + '</div>'
                     + '<div class="ysw_desc">' + m.desc + '</div>';
   $result.classList.add('ysw_show');
+
+  // 显示做法演示视频 + 从头播放
+  var $demo = document.getElementById('yswDemo');
+  var $vid  = document.getElementById('yswDemoVid');
+  $demo.classList.add('ysw_show');
+  $vid.currentTime = 0;
+  var p = $vid.play();
+  // Safari 某些机型 play() 返回 Promise，需要 catch 防止报错
+  if (p && p.catch) p.catch(function () {});
 }
 
 /* 函数名：ysw_extractAcc
