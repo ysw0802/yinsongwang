@@ -126,3 +126,7 @@
 ## 2026-11-16 15:30:00 (Asia/Shanghai)
 - 模型: GLM-5.3-Flash
 - 提示词: 请帮我检查视频在真机上的自动播放兼容性（ffprobe 分析：两个视频都有 rotation=-90° 元数据，ffmpeg transpose 烤进像素 + 清除元数据；加 source fallback + preload=metadata；autoplay+ muted + playsinline 策略确认）
+
+## 2026-11-16 15:45:00 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 把整个项目上传到课堂目录里面（修复 starter-level2.html 错误链接 → starter-level2ysw-802.html；补入 css3004、dataTyp004、grid004、svg004、starter-level1 五个缺失模块；update-index.js 收录全部 23 个有效页面；课堂目录 17→22 条）
