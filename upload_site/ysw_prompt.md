@@ -122,3 +122,7 @@
 ## 2026-11-16 15:15:00 (Asia/Shanghai)
 - 模型: GLM-5.3-Flash
 - 提示词: 把这个视频放到任务4里面（video(2).mp4 → swiper-imgs/shake-demo.mp4，mobile-sensor.html 摇出菜谱后显示做法演示视频）
+
+## 2026-11-16 15:30:00 (Asia/Shanghai)
+- 模型: GLM-5.3-Flash
+- 提示词: 请帮我检查视频在真机上的自动播放兼容性（ffprobe 分析：两个视频都有 rotation=-90° 元数据，ffmpeg transpose 烤进像素 + 清除元数据；加 source fallback + preload=metadata；autoplay+ muted + playsinline 策略确认）

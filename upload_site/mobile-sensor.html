@@ -144,7 +144,10 @@
   <!-- 做法演示视频（摇出菜谱后出现） -->
   <div class="ysw_demo" id="yswDemo">
     <div class="ysw_demo_label">🎬 今日菜谱做法演示</div>
-    <video id="yswDemoVid" src="swiper-imgs/shake-demo.mp4" controls autoplay muted loop playsinline webkit-playsinline></video>
+    <video id="yswDemoVid" controls autoplay muted loop playsinline webkit-playsinline preload="metadata">
+      <source src="swiper-imgs/shake-demo.mp4" type="video/mp4">
+      您的浏览器不支持 HTML5 视频
+    </video>
   </div>
 
   <!-- iOS 权限申请按钮 -->

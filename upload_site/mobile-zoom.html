@@ -88,7 +88,10 @@
   <!-- 媒体容器 -->
   <div class="ysw_viewer" id="yswViewer">
     <img id="yswImg" src="swiper-imgs/c919_1.jpg" alt="C919 大飞机">
-    <video id="yswVid" src="swiper-imgs/zoom-video.mp4" controls playsinline webkit-playsinline style="display:none;"></video>
+    <video id="yswVid" controls playsinline webkit-playsinline preload="metadata" style="display:none;">
+      <source src="swiper-imgs/zoom-video.mp4" type="video/mp4">
+      您的浏览器不支持 HTML5 视频
+    </video>
     <div class="ysw_scale_badge" id="yswBadge">1.0x</div>
   </div>
 
